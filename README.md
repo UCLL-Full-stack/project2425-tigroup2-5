@@ -5,4 +5,4 @@ To get started, open the Readme.md files in the analysis, back-end and front-end
 
 Change this readme file to describe your project, change the title and fill in your name below.
 
-### \<Anton Mergaerts\> / \<Lennard Mergaerts\>
+### Anton Mergaerts / Lennard Mergaerts
