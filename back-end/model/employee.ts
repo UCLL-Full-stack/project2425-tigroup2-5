@@ -2,48 +2,29 @@ import { Person } from "./person";
 import { Club } from "./club";
 
 export class Employee {
-    private id!: number;
-    private club?: Club;
-    private person!: Person;
-    private salary!: number;
+    readonly id?: number;
+    readonly club?: Club;
+    readonly person: Person;
+    readonly salary: number;
 
-    constructor(id: number, club: Club, person: Person, salary: number) {
-        this.setId(id);
-        this.setClub(club);
-        this.setPerson(person);
-        this.setSalary(salary);
+    constructor(Employee:{
+        id: number,
+        club: Club,
+        person: Person,
+        salary: number
+    }) {
+        this.id = Employee.id;
+        this.club = Employee.club;
+        this.person = Employee.person;
+        this.salary = Employee.salary;
     }
 
-    public getId(): number {
-        return this.id;
-    }
-
-    public getClub(): Club | undefined {
-        return this.club;
-    }
-
-    public getPerson(): Person {
-        return this.person;
-    }
-
-    public getSalary(): number {
-        return this.salary;
-    }
-
-    public setId(id: number): void {
-        this.id = id;
-    }
-
-    public setClub(club: Club): void {
-        this.club = club;
-    }
-
-    public setPerson(person: Person): void {
-        this.person = person;
-    }
-
-    public setSalary(salary: number): void {
-        this.salary = salary;
+    equals({id, club, person, salary}: Employee): boolean {
+        return (
+            this.id === id &&
+            this.person.equals(person) &&
+            this.salary === salary
+        )
     }
 
     public toString(): string {

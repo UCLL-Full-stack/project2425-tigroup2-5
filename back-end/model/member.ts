@@ -1,28 +1,19 @@
 import { Person } from "./person";
 
 export class Member {
-    private id!: number;
-    private person!: Person;
+    readonly id?: number;
+    readonly person: Person;
 
-    constructor(id: number, person: Person) {
-        this.setId(id);
-        this.setPerson(person);
+    constructor(member:{
+        id: number,
+        person: Person
+    }) {
+        this.id = member.id;
+        this.person = member.person;
     }
 
-    public getId(): number {
-        return this.id;
-    }
-
-    public getPerson(): Person {
-        return this.person;
-    }
-
-    public setId(id: number): void {
-        this.id = id;
-    }
-
-    public setPerson(person: Person): void {
-        this.person = person;
+    equals({id, person}: Member): boolean {
+        return this.id === id && this.person.equals(person);
     }
 
     public toString(): string {

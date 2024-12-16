@@ -4,15 +4,15 @@ import { Region } from "../model/region"
 import { Person } from "../model/person"
 
 
-const validRegion = new Region(1, "Region 1");
-const validClub = new Club(1, validRegion, "Address 1");
-const validPerson = new Person("1", "John", "Doe", "john.doe@email.com", "123456789", new Date());
+const validRegion = new Region({id: 1, name: "Region 1"});
+const validClub = new Club({id: 1, region: validRegion, address: "Address 1"});
+const validPerson = new Person({nrn: "1", firstname: "John", surname: "Doe", email: "john.doe@email.com", phone: "123456789", birthDate: new Date()});
 
 test("given valid values, when: employee is created, then: employee is created with those values", () => {
-    const employee = new Employee(1, validClub, validPerson, 1000);
+    const employee = new Employee({id: 1, club: validClub, person: validPerson, salary: 1000});
 
-    expect(employee.getId()).toBe(1);
-    expect(employee.getClub()).toBe(validClub);
-    expect(employee.getPerson()).toBe(validPerson);
-    expect(employee.getSalary()).toBe(1000);
+    expect(employee.id).toBe(1);
+    expect(employee.club).toBe(validClub);
+    expect(employee.person).toBe(validPerson);
+    expect(employee.salary).toBe(1000);
 })
