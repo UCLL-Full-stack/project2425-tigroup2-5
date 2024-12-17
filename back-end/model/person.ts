@@ -1,67 +1,38 @@
 export class Person {
-    private nrn!: string;
-    private firstname!: string;
-    private surname!: string;
-    private email!: string;
-    private phone!: string;
-    private birthDate!: Date;
+    readonly nrn?: string;
+    readonly firstname: string;
+    readonly surname: string;
+    readonly email: string;
+    readonly phone: string;
+    readonly birthDate: Date;
 
-    constructor (nrn: string, firstname: string, surname: string, email: string, phone: string, birthDate: Date) {
-        this.setNrn(nrn);
-        this.setFirstname(firstname);
-        this.setSurname(surname);
-        this.setEmail(email);
-        this.setPhone(phone);
-        this.setBirthDate(birthDate);
-    }
-        
-    public getNrn(): string {
-        return this.nrn;
-    }
-
-    public getFirstname(): string {
-        return this.firstname;
-    }
-
-    public getSurname(): string {
-        return this.surname;
+    constructor(Person:{
+        nrn: string,
+        firstname: string,
+        surname: string,
+        email: string,
+        phone: string,
+        birthDate: Date
+    }) {
+        this.nrn = Person.nrn;
+        this.firstname = Person.firstname;
+        this.surname = Person.surname;
+        this.email = Person.email;
+        this.phone = Person.phone;
+        this.birthDate = Person.birthDate;
     }
 
-    public getEmail(): string {
-        return this.email;
+    equals({nrn, firstname, surname, email, phone, birthDate}: Person): boolean {
+        return (
+            this.nrn === nrn &&
+            this.firstname === firstname &&
+            this.surname === surname &&
+            this.email === email &&
+            this.phone === phone &&
+            this.birthDate === birthDate
+        )
     }
 
-    public getPhone(): string {
-        return this.phone;
-    }
-
-    public getBirthDate(): Date {
-        return this.birthDate;
-    }
-
-    public setNrn(nrn: string): void {
-        this.nrn = nrn;
-    }
-
-    public setFirstname(firstname: string): void {
-        this.firstname = firstname;
-    }
-
-    public setSurname(surname: string): void {
-        this.surname = surname;
-    }
-
-    public setEmail(email: string): void {
-        this.email = email;
-    }
-
-    public setPhone(phone: string): void {
-        this.phone = phone;
-    }
-
-    public setBirthDate(birthDate: Date): void {
-        this.birthDate = birthDate;
-    }
 
     public toString(): string {
         return `Person [nrn=${this.nrn}, firstname=${this.firstname}, surname=${this.surname}, email=${this.email}, phone=${this.phone}, birthDate=${this.birthDate}]`;

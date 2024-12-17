@@ -4,12 +4,19 @@ const validDate = new Date();
 
 test("given valid values, when: person is created, then: person is created with those values", () => {
     
-    const validPerson = new Person("1", "John", "Doe", "john.doe@email.com", "123456789", validDate);
+    const validPerson = new Person({
+        nrn: "1",
+        firstname: "John",
+        surname: "Doe",
+        email: "john.doe@email.com",
+        phone: "123456789",
+        birthDate: validDate
+    });
 
-    expect(validPerson.getNrn()).toBe("1");
-    expect(validPerson.getFirstname()).toBe("John");
-    expect(validPerson.getSurname()).toBe("Doe");
-    expect(validPerson.getEmail()).toBe("john.doe@email.com");
-    expect(validPerson.getPhone()).toBe("123456789");
-    expect(validPerson.getBirthDate()).toBe(validDate);
+    expect(validPerson.nrn).toBe("1");
+    expect(validPerson.firstname).toBe("John");
+    expect(validPerson.surname).toBe("Doe");
+    expect(validPerson.email).toBe("john.doe@email.com");
+    expect(validPerson.phone).toBe("123456789");
+    expect(validPerson.birthDate).toBe(validDate);
 });

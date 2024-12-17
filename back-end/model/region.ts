@@ -1,26 +1,17 @@
 export class Region {
-    private id!: number;
-    private name!: string;
+    readonly id?: number;
+    readonly name: string;
 
-    constructor(id: number, name: string) {
-        this.setId(id);
-        this.setName(name);
+    constructor(Region:{
+        id: number,
+        name: string
+    }) {
+        this.id = Region.id;
+        this.name = Region.name;
     }
 
-    public getId(): number {
-        return this.id;
-    }
-
-    public getName(): string {
-        return this.name;
-    }
-
-    public setId(id: number): void {
-        this.id = id;
-    }
-
-    public setName(name: string): void {
-        this.name = name;
+    equals({id, name}: Region): boolean {
+        return this.id === id && this.name === name;
     }
 
     public toString(): string {
