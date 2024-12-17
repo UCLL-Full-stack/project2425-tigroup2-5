@@ -1,6 +1,6 @@
 import subscriptionDb from "../repository/subscription.db";
 import { Subscription } from "../model/subscription";
-import { subscriptionInput } from "../types";
+import { SubscriptionInput } from "../types";
 
 const getAllSubscriptions = async(): Promise<Subscription[]> => subscriptionDb.getAllSubscriptions();
 
@@ -10,7 +10,7 @@ const getSubscriptionById = async(id: number): Promise<Subscription> => {
     return subscription;
 };
 
-const createSubscription = async(subscription: subscriptionInput): Promise<Subscription> => {
+const createSubscription = async(subscription: SubscriptionInput): Promise<Subscription> => {
     return subscriptionDb.createSubscription(subscription);
 }
 

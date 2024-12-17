@@ -7,8 +7,8 @@ export class Enrollment {
     readonly id?: number;
     readonly subscription: Subscription;
     readonly member: Member;
-    readonly club?: Club;
-    readonly region?: Region;
+    readonly club?: Club | null;
+    readonly region?: Region | null;
 
     // constructor
     constructor(Enrollment: {

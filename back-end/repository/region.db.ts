@@ -10,10 +10,14 @@ const regions: Region[] = [
     new Region({id: currentId++, name: 'West-Vlaanderen'}),
 ];
 
+const addRegion = (name: string): void => {
+    regions.push(new Region({id: currentId++, name}));
+}
+
 const getAllRegions = (): Region[] => regions;
 
 const getRegionById = (id: number): Region | undefined => regions.find((region) => region.id === id);
 
 const getRegionByName = (name: string): Region | undefined => regions.find((region) => region.name === name);
 
-export default { getAllRegions, getRegionById, getRegionByName };
+export default { addRegion, getAllRegions, getRegionById, getRegionByName };

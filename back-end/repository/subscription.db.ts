@@ -1,5 +1,5 @@
 import { Subscription } from "../model/subscription";
-import { subscriptionInput } from "../types";
+import { SubscriptionInput } from "../types";
 
 let currentId = 1;
 
@@ -9,7 +9,7 @@ const subscriptions: Subscription[] = [
     new Subscription({id: currentId++, type: "VIP", price: 300}),
 ];
 
-const createSubscription = ({type: type, price: price}:subscriptionInput): Subscription => {
+const createSubscription = ({type: type, price: price}:SubscriptionInput): Subscription => {
     const subscription = new Subscription({id: currentId++, type, price});
     subscriptions.push(subscription);
     return subscription;
