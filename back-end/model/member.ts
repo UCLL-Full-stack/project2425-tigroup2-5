@@ -1,15 +1,19 @@
+import { Enrollment } from "./enrollment";
 import { Person } from "./person";
 
 export class Member {
     readonly id?: number;
     readonly person: Person;
+    readonly enrollments: Enrollment[];
 
     constructor(member:{
         id: number,
-        person: Person
+        person: Person,
+        enrollments: Enrollment[]
     }) {
         this.id = member.id;
         this.person = member.person;
+        this.enrollments = member.enrollments || [];
     }
 
     equals({id, person}: Member): boolean {

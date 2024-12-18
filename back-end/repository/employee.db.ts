@@ -7,8 +7,8 @@ let currentId = 1;
 const employees: Employee[] = [
 ];
 
-const addEmployee = (club: Club, person: Person, salary: number): void => {
-    employees.push(new Employee({id: currentId++, club, person, salary}));
+const addEmployee = ( person: Person, salary: number ): void => {
+    employees.push(new Employee({id: currentId++, person, salary, employments: []}));
 }
 
 const getAllEmployees = (): Employee[] => employees;

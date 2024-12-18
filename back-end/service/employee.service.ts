@@ -1,4 +1,4 @@
-import emloyeeDb from "../repository/emloyee.db";
+import emloyeeDb from "../repository/employee.db";
 import { Employee } from "../model/employee";
 import { EmployeeInput } from "../types";
 import clubService from "./club.service";
@@ -7,7 +7,7 @@ import personService from "./person.service";
 const addEmployee = async({clubId, personNrn, salary}: EmployeeInput): Promise<void> => {
     const club = await clubService.getClubById(clubId);
     const person = await personService.getPersonByNrn(personNrn);
-    await emloyeeDb.addEmployee( club, person , salary);
+    await emloyeeDb.addEmployee( person , salary);
 };
 
 const getAllEmployees = async(): Promise<Employee[]> => emloyeeDb.getAllEmployees();
