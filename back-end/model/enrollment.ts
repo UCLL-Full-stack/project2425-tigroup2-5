@@ -23,6 +23,14 @@ export class Enrollment {
         this.member = Enrollment.member;
         this.club = Enrollment.club;
         this.region = Enrollment.region;
+        Enrollment.subscription.enrollments.push(this);
+        Enrollment.member.enrollments.push(this);
+        if (Enrollment.club) {
+            Enrollment.club.enrollments.push(this);
+        }
+        if (Enrollment.region) {
+            Enrollment.region.enrollments.push(this);
+        }
     }
 
     // equals

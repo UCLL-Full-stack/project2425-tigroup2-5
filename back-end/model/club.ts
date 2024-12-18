@@ -1,29 +1,35 @@
+import { Employment } from './employment';
+import { Enrollment } from './enrollment';
 import { Region } from './region';
 
 export class Club {
     readonly id?: number;
-    readonly region: Region;
     readonly address: string;
+    readonly region: Region;
+    readonly employments: Employment[];
+    readonly enrollments: Enrollment[];
 
     constructor(club: {
-        id: number,
-        region:Region,
-        address: string
+        id?: number;
+        address: string;
+        region: Region;
+        employments: Employment[];
+        enrollments: Enrollment[];
     }) {
         this.id = club.id;
-        this.region = club.region;
         this.address = club.address;
+        this.employments = club.employments || [];
+        this.enrollments = club.enrollments || [];
+        this.region = club.region;
+        club.region.clubs.push(this);
     }
 
-    equals({id, region, address}: Club): boolean {
-        return (
-            this.id === id &&
-            this.region.equals(region) &&
-            this.address === address
-        )
+    equals({ id, address, region }: Club): boolean {
+        return this.id === id && this.address === address && this.region.equals(region);
     }
+    
 
     public toString(): string {
-        return `Club [id=${this.id}, region=${this.region}, address=${this.address}]`;
+        return `Club [id=${this.id}, address=${this.address}]`;
     }
 }
