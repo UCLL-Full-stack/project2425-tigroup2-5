@@ -7,19 +7,26 @@ export class Club {
     readonly address: string;
     readonly region: Region;
     readonly employments: Employment[];
+    readonly enrollments: Enrollment[];
 
     constructor(club: {
         id?: number;
         address: string;
-        employments: Employment[];
         region: Region;
+        employments: Employment[];
+        enrollments: Enrollment[];
     }) {
         this.id = club.id;
         this.address = club.address;
         this.employments = club.employments || [];
+        this.enrollments = club.enrollments || [];
         this.region = club.region;
+        club.region.clubs.push(this);
     }
 
+    equals({ id, address, region }: Club): boolean {
+        return this.id === id && this.address === address && this.region.equals(region);
+    }
     
 
     public toString(): string {

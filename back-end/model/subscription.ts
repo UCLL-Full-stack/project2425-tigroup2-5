@@ -4,26 +4,26 @@ export class Subscription {
     readonly id?: number;
     readonly type: string;
     readonly price: number;
-    readonly Enrollments: Enrollment[];
+    readonly enrollments: Enrollment[];
 
     constructor(subscription: {
         id: number,
         type: string,
         price: number,
-        Enrollments: Enrollment[]
+        enrollments: Enrollment[]
     }) {
         this.id = subscription.id;
         this.type = subscription.type;
         this.price = subscription.price;
-        this.Enrollments = subscription.Enrollments || [];
+        this.enrollments = subscription.enrollments || [];
     }
 
-    equals({id, type, price, Enrollments}: Subscription): boolean {
+    equals({id, type, price, enrollments}: Subscription): boolean {
         return (
             this.id === id &&
             this.type === type &&
             this.price === price &&
-            this.Enrollments === Enrollments
+            this.enrollments === enrollments
         )
     }
 

@@ -5,12 +5,12 @@ export class Region {
     readonly id?: number;
     readonly name: string;
     readonly clubs: Club[];
+    readonly enrollments: Enrollment[] = [];
 
     constructor(Region:{
         id: number,
         name: string,
         clubs: Club[],
-        enrollments: Enrollment[]
     }) {
         this.id = Region.id;
         this.name = Region.name;

@@ -10,16 +10,17 @@ export class Employment {
 
     constructor(Employment:{
         id: number,
-        startDate: Date,
-        salary: number,
         employee: Employee,
         club: Club
+        startDate: Date,
     }) {
         this.id = Employment.id;
         this.startDate = Employment.startDate;
         this.endDate = undefined;
         this.employee = Employment.employee;
         this.club = Employment.club;
+        Employment.employee.employments.push(this);
+        Employment.club.employments.push(this);
     }
 
     equals({id, startDate, endDate, employee, club}: Employment): boolean {
