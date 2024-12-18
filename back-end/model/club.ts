@@ -16,12 +16,18 @@ export class Club {
         employments: Employment[];
         enrollments: Enrollment[];
     }) {
+        this.validate(club);
+        
         this.id = club.id;
         this.address = club.address;
         this.employments = club.employments || [];
         this.enrollments = club.enrollments || [];
         this.region = club.region;
         club.region.clubs.push(this);
+    }
+    
+    validate(club: { id?: number; address: string; region: Region; employments: Employment[]; enrollments: Enrollment[]; }) {
+        throw new Error('Method not implemented.');
     }
 
     equals({ id, address, region }: Club): boolean {
