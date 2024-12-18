@@ -12,7 +12,7 @@ export class Person {
         surname: string,
         email: string,
         phone: string,
-        birthDate: Date
+        birthDate: Date,
     }) {
         this.nrn = Person.nrn;
         this.firstname = Person.firstname;
