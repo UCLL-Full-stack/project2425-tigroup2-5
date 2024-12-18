@@ -11,9 +11,17 @@ export class Member {
         person: Person,
         enrollments: Enrollment[]
     }) {
+        this.validate(member);
+
         this.id = member.id;
         this.person = member.person;
         this.enrollments = member.enrollments || [];
+    }
+
+    validate(member: { id: number; person: Person; enrollments: Enrollment[]; }) {
+        if (member.person.getAge() < 16) {
+            throw new Error("Person is younger than 16");
+        }
     }
 
     equals({id, person}: Member): boolean {
