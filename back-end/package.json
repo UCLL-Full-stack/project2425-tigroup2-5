@@ -33,6 +33,7 @@
         "helmet": "^7.1.0",
         "jsonwebtoken": "^9.0.0",
         "swagger-jsdoc": "^6.2.0",
+        "swagger-ui": "^5.18.2",
         "swagger-ui-express": "^4.6.0"
     },
     "devDependencies": {
