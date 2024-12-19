@@ -1,10 +1,10 @@
 import Header from "@/app/components/header";
+import SubscriptionOverview from "@/app/components/subscription/subscriptionOverview";
 
 export default function Subscription() {
     return (
         <div>
-            <Header></Header>
-            <h1>My Subscription</h1>
+            <SubscriptionOverview></SubscriptionOverview>
         </div>
     );
 }

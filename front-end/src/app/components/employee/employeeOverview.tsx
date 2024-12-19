@@ -1,16 +1,15 @@
-import Header from "../header";
-import { Member } from "@/../types/";
+import { Employee } from "@/../types/";
 
 type Props = {
-    members: Array<Member>;
+    employees: Array<Employee>;
 };
 
-const MembersPage: React.FC<Props> = ({members}) => {
+const EmployeeOverview: React.FC<Props> = ({employees}) => {
 
     return (
         <>
 
-        {members && (
+        {employees && (
             <div>
                 <div className="container">
                     <div className="row">
@@ -19,20 +18,22 @@ const MembersPage: React.FC<Props> = ({members}) => {
                                 <thead className="text-black">
                                     <tr>
                                         <th>ID</th>
+                                        <th>Admin</th>
                                         <th>First Name</th>
                                         <th>Last Name</th>
                                         <th>Email</th>
-                                        <th>Phone</th>
+                                        <th>Salary</th>
                                     </tr>
                                 </thead>
                                 <tbody className="text-black">
-                                    {members.map((member: Member) => (
-                                        <tr key={member.id}>
-                                            <td>{member.id}</td>
-                                            <td>{member.person?.firstname}</td>
-                                            <td>{member.person?.surname}</td>
-                                            <td>{member.person?.email}</td>
-                                            <td>{member.person?.phone}</td>
+                                    {employees.map((employee: Employee) => (
+                                        <tr key={employee.id}>
+                                            <td>{employee.id}</td>
+                                            <td>{employee.admin}</td>
+                                            <td>{employee.person?.firstname}</td>
+                                            <td>{employee.person?.surname}</td>
+                                            <td>{employee.person?.email}</td>
+                                            <td>{employee.salary}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -47,4 +48,4 @@ const MembersPage: React.FC<Props> = ({members}) => {
     );
 };
 
-export default MembersPage;
+export default EmployeeOverview;

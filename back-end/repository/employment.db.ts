@@ -18,6 +18,7 @@ const getAllEmployments = async (): Promise<Employment[]> => {
             }
         }
     );
+
     return employmentsPrisma.map((employmentPrisma) => Employment.from(employmentPrisma));
 }
 

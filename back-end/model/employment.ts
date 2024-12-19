@@ -6,13 +6,13 @@ export class Employment {
     readonly id?: number;
     readonly startDate: Date;
     readonly endDate?: Date | null;
-    readonly employee: Employee;
-    readonly club: Club;
+    readonly employee?: Employee | null;
+    readonly club?: Club | null;
 
     constructor(Employment:{
         id: number,
-        employee: Employee,
-        club: Club
+        employee: Employee | null,
+        club: Club | null,
         startDate: Date,
     }) {
         this.id = Employment.id;
@@ -26,9 +26,7 @@ export class Employment {
         return (
             this.id === id &&
             this.startDate === startDate &&
-            this.endDate === endDate &&
-            this.employee.equals(employee) &&
-            this.club.equals(club)
+            this.endDate === endDate
         )
     }
 
@@ -38,8 +36,8 @@ export class Employment {
         employee,
         club
     } : EmploymentPrisma & {
-        employee: EmployeePrisma & {person: PersonPrisma},
-        club: ClubPrisma & {region: RegionPrisma}
+        employee: EmployeePrisma & {person: PersonPrisma};
+        club: ClubPrisma & {region: RegionPrisma};
     }) {
         return new Employment({
             id: id,

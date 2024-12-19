@@ -3,33 +3,35 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import swaggerUi, { serve } from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
-import personRouter from './controller/person.routes';
 import { Request, Response, NextFunction } from 'express';
-import clubRouter from './controller/club.routes';
 import employeeRouter from './controller/employee.routes';
+import employmentRouter from './controller/employment.routes';
+import personRouter from './controller/person.routes';
 import memberRouter from './controller/member.routes';
 import regionRouter from './controller/region.routes';
 import subscriptionRouter from './controller/subscription.routes';
-import { tr } from 'date-fns/locale';
+import clubRouter from './controller/club.routes';
 import enrollmentRouter from './controller/enrollment.routes';
+import { tr } from 'date-fns/locale';
 
 const app = express();
-const port = process.env.APP_PORT || 3000;
+const port = process.env.APP_PORT || 3001;
 
-app.use(cors({ origin: 'http://localhost:8080' }));
+app.use(cors({ origin: '*' }));
 app.use(bodyParser.json());
 
 app.get('/status', (req, res) => {
     res.json({ message: 'Back-end is running...' });
 });
 
-app.use('/club', clubRouter);
-app.use('/employee', employeeRouter);
 app.use('/person', personRouter);
 app.use('/member', memberRouter);
 app.use('/region', regionRouter);
 app.use('/subscription', subscriptionRouter);
-app.use('/enrollment', enrollmentRouter)
+app.use('/club', clubRouter);
+app.use('/enrollment', enrollmentRouter);
+app.use('/employment', employmentRouter);
+app.use('/employee', employeeRouter);
 
 
 const swaggerOpts = {

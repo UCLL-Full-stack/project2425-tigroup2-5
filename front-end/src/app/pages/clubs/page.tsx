@@ -1,10 +1,11 @@
+import ClubOverview from "@/app/components/clubs/clubOverview";
 import Header from "@/app/components/header";
 
-export default function Clubs() {
+export default function Clubs() { 
     return (
-        <div>
-            <Header></Header>
-            <h1>Clubs</h1>
-        </div>
-    );
+        <>
+        <Header></Header>
+        <ClubOverview clubs={[]}></ClubOverview>
+    </>
+    )
 }

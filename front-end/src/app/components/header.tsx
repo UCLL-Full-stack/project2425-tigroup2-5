@@ -20,9 +20,9 @@ const Header: React.FC = () => {
     }
 
   return (
-    <header className="p-3 mb-3 border-bottom bg-gradient-to-br from-gray-900 to-gray-600 flex flex-col items-center">
+    <header className="p-3 mb-3 border-bottom bg-gradient-to-br from-red-200 to-red-700 flex flex-col items-center">
       <a className="flex mb-2 md:mb-5 text-white-50 text-3xl text-gray-300">
-        {t("app.title")}
+        AnyGym
       </a>
       <nav className="items-center flex md:flex-row flex-col">
         <Link
@@ -43,17 +43,47 @@ const Header: React.FC = () => {
         >
             Members
         </Link>
+        <Link
+          href="/pages/employments"
+          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
+        >
+            Employments
+        </Link>
+        <Link
+          href="/pages/employees"
+          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
+        >
+            Employees
+        </Link>
+        <Link
+          href="/pages/enrollments"
+          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
+        >
+            Enrollments
+        </Link>
+        <Link
+          href="/pages/clubs"
+          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
+        >
+            Clubs
+        </Link>
+        <Link
+          href="/pages/signup"
+          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
+        >
+            Signup
+        </Link>
         {!loggedInUser && (
           <Link
             href="/pages/login"
             className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
           >
-            login
+            Login
           </Link>         
         )}
         {loggedInUser && (
           <a
-            href="/login"
+            href="/pages/login"
             onClick={handleClick}
             className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
           >
