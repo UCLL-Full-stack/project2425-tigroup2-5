@@ -1,33 +1,50 @@
+import { Employee as EmployeePrisma, Person as PersonPrisma } from "@prisma/client";
+import { EmployeeInput } from "../types";
+import { Employment } from "./employment";
 import { Person } from "./person";
-import { Club } from "./club";
 
 export class Employee {
     readonly id?: number;
-    readonly club?: Club;
+    readonly admin: boolean;
+    readonly title: string;
     readonly person: Person;
     readonly salary: number;
 
     constructor(Employee:{
         id: number,
-        club: Club,
+        admin: boolean,
+        title: string,
         person: Person,
         salary: number
     }) {
         this.id = Employee.id;
-        this.club = Employee.club;
+        this.admin = Employee.admin;
+        this.title = Employee.title;
         this.person = Employee.person;
         this.salary = Employee.salary;
     }
-
-    equals({id, club, person, salary}: Employee): boolean {
+    
+    equals({id, person, salary}: Employee): boolean {
         return (
             this.id === id &&
             this.person.equals(person) &&
             this.salary === salary
         )
     }
-
-    public toString(): string {
-        return `Employee [id=${this.id}, club=${this.club} person=${this.person}, salary=${this.salary}]`;
+    
+    public static from({
+        id,
+        admin,
+        title,
+        person,
+        salary,
+    } : EmployeePrisma & {person: PersonPrisma} ) {
+        return new Employee({
+            id: id,
+            admin: admin,
+            title: title,
+            person: Person.from(person),
+            salary: salary
+        });
     }
 }

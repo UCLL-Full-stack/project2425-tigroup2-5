@@ -1,3 +1,5 @@
+import { Subscription as SubscriptionPrisma } from '@prisma/client';
+
 export class Subscription {
     readonly id?: number;
     readonly type: string;
@@ -6,7 +8,7 @@ export class Subscription {
     constructor(subscription: {
         id: number,
         type: string,
-        price: number
+        price: number,
     }) {
         this.id = subscription.id;
         this.type = subscription.type;
@@ -21,7 +23,15 @@ export class Subscription {
         )
     }
 
-    public toString(): string {
-        return `Subscription [id=${this.id}, type=${this.type}, price=${this.price}]`;
+    static from({
+        id,
+        type,
+        price,
+    }: SubscriptionPrisma) {
+        return new Subscription({
+            id: id,
+            type: type,
+            price: price,
+        });
     }
 }

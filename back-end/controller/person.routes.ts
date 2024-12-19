@@ -1,7 +1,29 @@
-import { Router } from "express";
 import personService from "../service/person.service";
+import express, { NextFunction, Request, Response } from 'express';
 
-const personRouter = Router();
+const personRouter = express.Router();
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *   Person:
+ *    type: object
+ *   properties:
+ *    nrn:
+ *     type: string
+ *     description: The NRN of the person
+ *    firstName:
+ *     type: string
+ *     description: The first name of the person
+ *    lastName:
+ *     type: string
+ *     description: The last name of the person
+ *    birthDate:
+ *     type: string
+ *     format: date
+ *     description: The birth date of the person
+ */
 
 /**
  * @swagger
@@ -20,12 +42,12 @@ const personRouter = Router();
  *       500:
  *         description: Internal server error
  */
-personRouter.get("/", async (req, res) => {
+personRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const persons = await personService.getAllPersons();
-        res.json(persons);
+        const lecturers = await personService.getAllPersons();
+        res.status(200).json(lecturers);
     } catch (error) {
-        res.status(500).send((error as Error).message);
+        next(error);
     }
 });
 
@@ -53,16 +75,13 @@ personRouter.get("/", async (req, res) => {
  *       500:
  *         description: Internal server error
  */
-personRouter.get("/:nrn", async (req, res) => {
+personRouter.get('/:nrn', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const person = await personService.getPersonByNrn(req.params.nrn);
-        if (person === undefined) {
-            res.status(404).send(`Person with nrn ${req.params.nrn} not found`);
-        } else {
-            res.json(person);
-        }
+        const nrn = req.params.nrn;
+        const lecturer = await personService.getPersonByNrn(nrn);
+        res.status(200).json(lecturer);
     } catch (error) {
-        res.status(500).send((error as Error).message);
+        next(error);
     }
 });
 

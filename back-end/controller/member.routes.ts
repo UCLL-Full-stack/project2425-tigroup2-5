@@ -1,7 +1,7 @@
-import { Router } from "express";
+import express, { NextFunction, Request, Response } from 'express';
 import memberService from "../service/member.service";
 
-const memberRouter = Router();
+const memberRouter = express.Router();
 /**
  * @swagger
  * /:
@@ -19,14 +19,12 @@ const memberRouter = Router();
  *       500:
  *         description: Internal server error
  */
-
-
-memberRouter.get("/", async (req, res) => {
+memberRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const members = await memberService.getAllMembers();
-        res.json(members);
+        res.status(200).json(members);
     } catch (error) {
-        res.status(500).send((error as Error).message);
+        next(error);
     }
 });
 
@@ -54,16 +52,13 @@ memberRouter.get("/", async (req, res) => {
  *       500:
  *         description: Internal server error
  */
-memberRouter.get("/:id", async (req, res) => {
+memberRouter.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const member = await memberService.getMemberById(Number(req.params.id));
-        if (member === undefined) {
-            res.status(404).send(`Member with id ${req.params.id} not found`);
-        } else {
-            res.json(member);
-        }
+        const id = parseInt(req.params.id);
+        const member = await memberService.getMemberById(id);
+        res.status(200).json(member);
     } catch (error) {
-        res.status(500).send((error as Error).message);
+        next(error);
     }
 });
 

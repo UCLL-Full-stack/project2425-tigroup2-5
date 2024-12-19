@@ -1,3 +1,7 @@
+import { Region as RegionPrisma, Club as ClubPrisma, Enrollment as EnrollmentPrisma } from '@prisma/client';
+import { Club } from "./club";
+import { Enrollment } from "./enrollment";
+
 export class Region {
     readonly id?: number;
     readonly name: string;
@@ -8,6 +12,16 @@ export class Region {
     }) {
         this.id = Region.id;
         this.name = Region.name;
+    }
+
+    public static from({
+        id,
+        name
+    } : RegionPrisma ) {
+        return new Region({
+            id: id,
+            name: name
+        });
     }
 
     equals({id, name}: Region): boolean {

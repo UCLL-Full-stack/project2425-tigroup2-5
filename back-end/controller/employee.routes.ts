@@ -20,7 +20,6 @@ const employeeRouter = Router();
  *         description: Internal server error
  */
 
-
 employeeRouter.get("/", async (req, res) => {
     try {
         const employees = await employeeService.getAllEmployees();
@@ -29,6 +28,7 @@ employeeRouter.get("/", async (req, res) => {
         res.status(500).send((error as Error).message);
     }
 });
+
 /**
  * @swagger
  * /{id}:
@@ -53,6 +53,7 @@ employeeRouter.get("/", async (req, res) => {
  *       500:
  *         description: Internal server error
  */
+
 employeeRouter.get("/:id", async (req, res) => {
     try {
         const employee = await employeeService.getEmployeeById(Number(req.params.id));
