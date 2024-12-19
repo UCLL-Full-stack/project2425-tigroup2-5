@@ -2,9 +2,7 @@ import { Router } from "express";
 import enrollmentService from "../service/enrollment.service";
 
 const enrollmentRouter = Router();
-/**
- * @swagger
- */
+
 enrollmentRouter.get("/", async (req, res) => {
     try {
         const enrollments = await enrollmentService.getAllEnrollments();
