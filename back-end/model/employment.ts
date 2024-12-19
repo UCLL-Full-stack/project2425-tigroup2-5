@@ -19,8 +19,6 @@ export class Employment {
         this.endDate = undefined;
         this.employee = Employment.employee;
         this.club = Employment.club;
-        Employment.employee.employments.push(this);
-        Employment.club.employments.push(this);
     }
 
     equals({id, startDate, endDate, employee, club}: Employment): boolean {

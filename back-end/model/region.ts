@@ -1,20 +1,27 @@
+import { Region as RegionPrisma, Club as ClubPrisma, Enrollment as EnrollmentPrisma } from '@prisma/client';
 import { Club } from "./club";
 import { Enrollment } from "./enrollment";
 
 export class Region {
     readonly id?: number;
     readonly name: string;
-    readonly clubs: Club[];
-    readonly enrollments: Enrollment[] = [];
 
     constructor(Region:{
         id: number,
-        name: string,
-        clubs: Club[],
+        name: string
     }) {
         this.id = Region.id;
         this.name = Region.name;
-        this.clubs = Region.clubs || [];
+    }
+
+    public static from({
+        id,
+        name
+    } : RegionPrisma ) {
+        return new Region({
+            id: id,
+            name: name
+        });
     }
 
     equals({id, name}: Region): boolean {
