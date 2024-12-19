@@ -1,10 +1,10 @@
 import Header from "@/app/components/header";
 
-export default function Clubs() {
+export default function MemberOverview() {
     return (
         <div>
             <Header></Header>
-            <h1>Clubs</h1>
+            <h1>Member Overview</h1>
         </div>
     );
 }

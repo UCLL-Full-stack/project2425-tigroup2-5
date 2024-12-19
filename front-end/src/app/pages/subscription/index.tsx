@@ -1,4 +1,4 @@
-import Header from "@/app/components/header/header";
+import Header from "@/app/components/header";
 
 export default function Subscription() {
     return (

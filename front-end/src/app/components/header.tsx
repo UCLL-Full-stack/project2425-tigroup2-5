@@ -32,16 +32,16 @@ const Header: React.FC = () => {
           Home
         </Link>
         <Link
-          href="/lecturers"
+          href="@/pages/profile"
           className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
         >
-            account
+            profile
         </Link>
         <Link
-          href="/schedule/overview"
+          href="/members"
           className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
         >
-            link
+            Members
         </Link>
         {!loggedInUser && (
           <Link

@@ -1,5 +1,6 @@
-import Header from "./components/header/header";
-import LoginScreen from "./components/login";
+import Link from "next/link";
+import LoginScreen from "./components/login/login";
+
 const Home: React.FC = () => {
   return (
     <div>
