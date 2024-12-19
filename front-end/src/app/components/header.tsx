@@ -32,20 +32,20 @@ const Header: React.FC = () => {
           Home
         </Link>
         <Link
-          href="@/pages/profile"
+          href="/pages/profile"
           className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
         >
             profile
         </Link>
         <Link
-          href="/members"
+          href="/pages/members"
           className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
         >
             Members
         </Link>
         {!loggedInUser && (
           <Link
-            href="/login"
+            href="/pages/login"
             className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
           >
             login
