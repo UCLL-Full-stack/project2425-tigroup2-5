@@ -1,22 +1,17 @@
+import database from "../util/database";
 import { Subscription } from "../model/subscription";
-import { SubscriptionInput } from "../types";
 
-let currentId = 1;
-
-const subscriptions: Subscription[] = [
-    new Subscription({id: currentId++, type: "Standard", price: 100}),
-    new Subscription({id: currentId++, type: "Premium", price: 200}),
-    new Subscription({id: currentId++, type: "VIP", price: 300}),
-];
-
-const createSubscription = ({type: type, price: price}:SubscriptionInput): Subscription => {
-    const subscription = new Subscription({id: currentId++, type, price});
-    subscriptions.push(subscription);
-    return subscription;
+const getAllSubscriptions = async (): Promise<Subscription[]> => {
+    const subscriptionsPrisma = await database.subscription.findMany();
+    return subscriptionsPrisma.map((subscriptionPrisma) => Subscription.from(subscriptionPrisma));
 }
 
-const getAllSubscriptions = (): Subscription[] => subscriptions;
+const getSubscriptionById = async ({ id }: { id: number }): Promise<Subscription | null> => {
+    const subscriptionPrisma = await database.subscription.findUnique({
+        where: { id }
+    });
 
-const getSubscriptionById = (id: number): Subscription | undefined => subscriptions.find((subscription) => subscription.id === id);
+    return subscriptionPrisma ? Subscription.from(subscriptionPrisma) : null;
+}
 
-export default { createSubscription, getAllSubscriptions, getSubscriptionById };
+export default { getAllSubscriptions, getSubscriptionById };

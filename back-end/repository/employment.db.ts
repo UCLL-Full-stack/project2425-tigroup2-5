@@ -1,12 +1,50 @@
+import database from '../util/database';
 import { Employment } from '../model/employment';
 
-let currentId = 1;
+const getAllEmployments = async (): Promise<Employment[]> => {
+    const employmentsPrisma = await database.employment.findMany(
+        {
+            include: {
+                employee: {
+                    include: {
+                        person: true
+                    }
+                },
+                club: {
+                    include: {
+                        region: true
+                    }
+                }
+            }
+        }
+    );
+    return employmentsPrisma.map((employmentPrisma) => Employment.from(employmentPrisma));
+}
 
-const employments: Employment[] = [
-];
+const getEmploymentById = async (id: number): Promise<Employment | null> => {
+    const employmentPrisma = await database.employment.findUnique({
+        where: {
+            id: id
+        },
+        include: {
+            employee: {
+                include: {
+                    person: true
+                }
+            },
+            club: {
+                include: {
+                    region: true
+                }
+            }
+        }
+    });
 
-const getAllEmployments = (): Employment[] => employments;
+    if (employmentPrisma === null) {
+        return null;
+    }
 
-const getEmploymentById = (id: number): Employment | undefined => employments.find((employment) => employment.id === id);
+    return Employment.from(employmentPrisma);
+}
 
 export default { getAllEmployments, getEmploymentById };

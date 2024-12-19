@@ -1,5 +1,7 @@
+import { Person as PersonPrisma } from '@prisma/client';
+
 export class Person {
-    readonly nrn?: string;
+    readonly id?: number;
     readonly firstname: string;
     readonly surname: string;
     readonly email: string;
@@ -7,7 +9,7 @@ export class Person {
     readonly birthDate: Date;
 
     constructor(Person:{
-        nrn: string,
+        id: number,
         firstname: string,
         surname: string,
         email: string,
@@ -17,17 +19,14 @@ export class Person {
 
         this.validate(Person);
 
-        this.nrn = Person.nrn;
+        this.id = Person.id;
         this.firstname = Person.firstname;
         this.surname = Person.surname;
         this.email = Person.email;
         this.phone = Person.phone;
         this.birthDate = Person.birthDate;
     }
-    validate(Person: { nrn: string; firstname: string; surname: string; email: string; phone: string; birthDate: Date; }) {
-        if (Person.nrn.length !== 13 || Person.nrn.match(/^[0-9]+$/) === null) {
-            throw new Error("Invalid nrn");
-        }
+    validate(Person: { id: number; firstname: string; surname: string; email: string; phone: string; birthDate: Date; }) {
 
         if (Person.firstname.length < 2) {
             throw new Error("Invalid firstname");
@@ -50,9 +49,9 @@ export class Person {
         }
     }
 
-    equals({nrn, firstname, surname, email, phone, birthDate}: Person): boolean {
+    equals({id, firstname, surname, email, phone, birthDate}: Person): boolean {
         return (
-            this.nrn === nrn &&
+            this.id === id &&
             this.firstname === firstname &&
             this.surname === surname &&
             this.email === email &&
@@ -71,8 +70,26 @@ export class Person {
         return age;
     }
 
+    static from ({
+        id,
+        firstName,
+        lastName,
+        email,
+        phone,
+        birthDate,
+    } : PersonPrisma ) {
+        return new Person({
+            id: id,
+            firstname: firstName,
+            surname: lastName,
+            email: email,
+            phone: phone,
+            birthDate: birthDate,
+        });
+    }
+
     public toString(): string {
-        return `Person [nrn=${this.nrn}, firstname=${this.firstname}, surname=${this.surname}, email=${this.email}, phone=${this.phone}, birthDate=${this.birthDate}]`;
+        return `Person [id=${this.id}, firstname=${this.firstname}, surname=${this.surname}, email=${this.email}, phone=${this.phone}, birthDate=${this.birthDate}]`;
     }
 
 }

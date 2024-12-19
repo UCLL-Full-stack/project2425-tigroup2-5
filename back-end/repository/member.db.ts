@@ -1,17 +1,24 @@
+import database from "../util/database";
 import { Member } from "../model/member";
-import { Person } from "../model/person";
 
-let currentId = 1;
-
-const members: Member[] = [
-];
-
-const addMember = (person: Person): void => {
-    members.push(new Member({id: currentId++, person}));
+const getAllMembers = async (): Promise<Member[]> => {
+    const membersPrisma = await database.member.findMany(
+        {
+            include: {
+                person: true
+            }
+        }
+    );
+    return membersPrisma.map((memberPrisma) => Member.from(memberPrisma));
 }
 
-const getAllMembers = (): Member[] => members;
+const getMemberById = async ({ id }: { id: number }): Promise<Member | null> => {
+    const memberPrisma = await database.member.findUnique({
+        where: { id },
+        include: { person: true },
+    });
 
-const getMemberById = (id: number): Member | undefined => members.find((member) => member.id === id);
+    return memberPrisma ? Member.from(memberPrisma) : null;
+}
 
 export default { getAllMembers, getMemberById };

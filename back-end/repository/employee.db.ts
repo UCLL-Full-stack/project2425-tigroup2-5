@@ -1,18 +1,24 @@
-import { Employee } from '../model/employee';
-import { Club } from '../model/club';
-import { Person } from '../model/person';
+import database from "../util/database";
+import { Employee } from "../model/employee";
 
-let currentId = 1;
-
-const employees: Employee[] = [
-];
-
-const addEmployee = ( person: Person, salary: number ): void => {
-    employees.push(new Employee({id: currentId++, person, salary, employments: []}));
+const getAllEmployees = async (): Promise<Employee[]> => {
+    const employeesPrisma = await database.employee.findMany(
+        {
+            include: {
+                person: true
+            }
+        }
+    );
+    return employeesPrisma.map((employeePrisma) => Employee.from(employeePrisma));
 }
 
-const getAllEmployees = (): Employee[] => employees;
+const getEmployeeById = async ({ id }: { id: number }): Promise<Employee | null> => {
+    const employeePrisma = await database.employee.findUnique({
+        where: { id },
+        include: { person: true },
+    });
 
-const getEmployeeById = (id: number): Employee | undefined => employees.find((employee) => employee.id === id);
+    return employeePrisma ? Employee.from(employeePrisma) : null;
+}
 
-export default { addEmployee, getAllEmployees, getEmployeeById };
+export default { getAllEmployees, getEmployeeById };

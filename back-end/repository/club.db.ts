@@ -1,16 +1,32 @@
+import database from '../util/database';
 import { Club } from '../model/club';
-import { Region } from '../model/region';
 
-let currentId = 1;
-
-const clubs: Club[] = [];
-
-const addClub = (region: Region, address: string): void => {
-    clubs.push(new Club({id: currentId++, region, address}));
+const getAllClubs = async (): Promise<Club[]> => {
+    const clubsPrisma = await database.club.findMany(
+        {
+            include: {
+                region: true
+            }
+        }
+    );
+    return clubsPrisma.map((clubPrisma) => Club.from(clubPrisma));
 }
 
-const getAllClubs = (): Club[] => clubs;
+const getClubById = async (id: number): Promise<Club | null> => {
+    const clubPrisma = await database.club.findUnique({
+        where: {
+            id: id
+        },
+        include: {
+            region: true
+        }
+    });
 
-const getClubById = (id: number): Club | undefined => clubs.find((club) => club.id === id);
+    if (clubPrisma === null) {
+        return null;
+    }
 
-export default { addClub, getAllClubs, getClubById };
+    return Club.from(clubPrisma);
+}
+
+export default { getAllClubs, getClubById };
