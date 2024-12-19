@@ -13,15 +13,15 @@ subscriptionRouter.get('/', async (req: Request, res: Response, next: NextFuncti
     }
 });
 
-subscriptionRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const subscriptionInput: SubscriptionInput = req.body;
-        const newSubscription = await subscriptionService.createSubscription(subscriptionInput);
-        res.status(201).json(newSubscription);
-    } catch (error) {
-        next(error);
-    }
-});
+// subscriptionRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         const subscriptionInput: SubscriptionInput = req.body;
+//         const newSubscription = await subscriptionService.createSubscription(subscriptionInput);
+//         res.status(201).json(newSubscription);
+//     } catch (error) {
+//         next(error);
+//     }
+// });
 
 subscriptionRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
