@@ -4,7 +4,6 @@ import clubService from "../service/club.service";
 const clubRouter = Router();
 
 
-
 /**
  * @swagger
  * /:

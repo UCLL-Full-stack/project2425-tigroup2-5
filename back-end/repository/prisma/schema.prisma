@@ -19,55 +19,66 @@ model Person {
 }
 
 model Member {
-    id         Int          @id @default(autoincrement())
-    personId   Int          @unique
-    person     Person       @relation(fields: [personId], references: [id])
-    Enrollment Enrollment[]
-    username   String
-    password   String
+    id          Int          @id @default(autoincrement())
+    personId    Int          @unique
+    person      Person       @relation(fields: [personId], references: [id])
+    enrollments Enrollment[]
+    username    String
+    password    String
 }
 
 model Employee {
-    id       Int     @id @default(autoincrement())
-    admin    Boolean
-    title    String
-    personId Int     @unique
-    person   Person  @relation(fields: [personId], references: [id])
-    Club     Club[]
+    id          Int          @id @default(autoincrement())
+    admin       Boolean
+    title       String
+    personId    Int          @unique
+    person      Person       @relation(fields: [personId], references: [id])
+    employments Employment[]
+}
+
+model Employment {
+    id         Int      @id @default(autoincrement())
+    startDate  DateTime @default(now())
+    endDate    DateTime
+    employeeId Int
+    employee   Employee @relation(fields: [employeeId], references: [id])
+    clubId     Int
+    club       Club     @relation(fields: [clubId], references: [id])
 }
 
 model Region {
-    id         Int          @id @default(autoincrement())
-    name       String
-    Enrollment Enrollment[]
+    id          Int          @id @default(autoincrement())
+    name        String
+    enrollments Enrollment[]
+    clubs       Club[]
 }
 
 model Club {
-    id         Int          @id @default(autoincrement())
-    address    String
-    regionId   Int
-    Enrollment Enrollment[]
-    employeeId Int?
-    Employee   Employee?    @relation(fields: [employeeId], references: [id])
+    id          Int          @id @default(autoincrement())
+    address     String
+    regionId    Int
+    region      Region       @relation(fields: [regionId], references: [id])
+    enrollments Enrollment[]
+    employments Employment[]
 }
 
 model Subscription {
-    id         Int          @id @default(autoincrement())
-    type       String
-    price      Float
-    Enrollment Enrollment[]
+    id          Int          @id @default(autoincrement())
+    type        String
+    price       Float
+    enrollments Enrollment[]
 }
 
 model Enrollment {
     id             Int          @id @default(autoincrement())
     memberId       Int
-    Member         Member       @relation(fields: [memberId], references: [id])
+    member         Member       @relation(fields: [memberId], references: [id])
     subscriptionId Int
     subscription   Subscription @relation(fields: [subscriptionId], references: [id])
-    regionId       Int
-    region         Region       @relation(fields: [regionId], references: [id])
+    regionId       Int?
+    region         Region?       @relation(fields: [regionId], references: [id])
     clubId         Int?
-    Club           Club?        @relation(fields: [clubId], references: [id])
+    club           Club?        @relation(fields: [clubId], references: [id])
     enrollmentDate DateTime
     expirationDate DateTime
 }
