@@ -1,7 +1,8 @@
-import { Router } from "express";
+
+import express, { NextFunction, Request, Response } from 'express';
 import clubService from "../service/club.service";
 
-const clubRouter = Router();
+const clubRouter = express.Router();
 
 
 /**
@@ -21,12 +22,12 @@ const clubRouter = Router();
  *       500:
  *         description: Internal server error
  */
-clubRouter.get("/", async (req, res) => {
+clubRouter.get("/", async (req: Request, res: Response, next: NextFunction ) => {
     try {
         const clubs = await clubService.getAllClubs();
         res.json(clubs);
     } catch (error) {
-        res.status(500).send((error as Error).message);
+        next(error);
     }
 });
 
@@ -54,16 +55,13 @@ clubRouter.get("/", async (req, res) => {
  *       500:
  *         description: Internal server error
  */
-clubRouter.get("/:id", async (req, res) => {
+clubRouter.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const club = await clubService.getClubById(Number(req.params.id));
-        if (club === undefined) {
-            res.status(404).send(`Club with id ${req.params.id} not found`);
-        } else {
-            res.json(club);
-        }
+        const id = parseInt(req.params.id);
+        const club = await clubService.getClubById(id);
+        res.json(club);
     } catch (error) {
-        res.status(500).send((error as Error).message);
+        next(error);
     }
 });
 

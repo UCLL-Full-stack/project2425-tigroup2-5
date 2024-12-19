@@ -1,29 +1,30 @@
-import { Club as ClubPrisma } from '@prisma/client';
+import { Club as ClubPrisma, Region as RegionPrisma } from '@prisma/client';
+import { Region } from './region';
 
 export class Club {
     readonly id?: number;
     readonly address: string;
-    readonly regionId: number;
+    readonly region: Region;
 
     constructor(club: {
         id?: number;
         address: string;
-        regionId: number;
+        region: Region;
     }) {
         this.id = club.id;
         this.address = club.address;
-        this.regionId = club.regionId;
+        this.region = club.region;
     }
 
     public static from({
         id,
         address,
-        regionId
-    }: ClubPrisma) {
+        region
+    }: ClubPrisma & { region: RegionPrisma }) {   
         return new Club({
             id: id,
             address: address,
-            regionId: regionId,
+            region: Region.from(region),
         });
     }
 

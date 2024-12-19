@@ -5,6 +5,28 @@ const personRouter = express.Router();
 
 /**
  * @swagger
+ * components:
+ *  schemas:
+ *   Person:
+ *    type: object
+ *   properties:
+ *    nrn:
+ *     type: string
+ *     description: The NRN of the person
+ *    firstName:
+ *     type: string
+ *     description: The first name of the person
+ *    lastName:
+ *     type: string
+ *     description: The last name of the person
+ *    birthDate:
+ *     type: string
+ *     format: date
+ *     description: The birth date of the person
+ */
+
+/**
+ * @swagger
  * /:
  *   get:
  *     summary: Retrieve a list of persons

@@ -1,12 +1,54 @@
+import database from '../util/database';
 import { Enrollment } from '../model/enrollment';
 
-let currentId = 1;
+const getAllEnrollments = async (): Promise<Enrollment[]> => {
+    const enrollmentsPrisma = await database.enrollment.findMany(
+        {
+            include: {
+                member: {
+                    include: {
+                        person: true
+                    }
+                },
+                subscription: true,
+                region: true,
+                club: {
+                    include: {
+                        region: true
+                    }
+                }
+            }
+        }
+    );
+    return enrollmentsPrisma.map((enrollmentPrisma) => Enrollment.from(enrollmentPrisma));
+}
 
-const enrollments: Enrollment[] = [
-];
+const getEnrollmentById = async (id: number): Promise<Enrollment | null> => {
+    const enrollmentPrisma = await database.enrollment.findUnique({
+        where: {
+            id: id
+        },
+        include: {
+            member: {
+                include: {
+                    person: true
+                }
+            },
+            subscription: true,
+            region: true,
+            club: {
+                include: {
+                    region: true
+                }
+            }
+        }
+    });
 
-const getAllEnrollments = (): Enrollment[] => enrollments;
+    if (enrollmentPrisma === null) {
+        return null;
+    }
 
-const getEnrollmentById = (id: number): Enrollment | undefined => enrollments.find((enrollment) => enrollment.id === id);
+    return Enrollment.from(enrollmentPrisma);
+}
 
 export default { getAllEnrollments, getEnrollmentById };

@@ -46,8 +46,8 @@ export class Enrollment {
     }: EnrollmentPrisma & {
         subscription: SubscriptionPrisma,
         member: (MemberPrisma & {person: PersonPrisma}),
-        club: ClubPrisma,
-        region: (RegionPrisma & {clubs: ClubPrisma[]}),
+        club: ClubPrisma & {region: RegionPrisma} | null,
+        region: RegionPrisma | null
     }) {
         return new Enrollment({
             id: id,

@@ -11,6 +11,7 @@ import memberRouter from './controller/member.routes';
 import regionRouter from './controller/region.routes';
 import subscriptionRouter from './controller/subscription.routes';
 import { tr } from 'date-fns/locale';
+import enrollmentRouter from './controller/enrollment.routes';
 
 const app = express();
 const port = process.env.APP_PORT || 3000;
@@ -22,12 +23,13 @@ app.get('/status', (req, res) => {
     res.json({ message: 'Back-end is running...' });
 });
 
-//app.use('/club', clubRouter);
-//app.use('/employee', employeeRouter);
+app.use('/club', clubRouter);
+app.use('/employee', employeeRouter);
 app.use('/person', personRouter);
-//app.use('/member', memberRouter);
-//app.use('/region', regionRouter);
-//app.use('/subscription', subscriptionRouter);
+app.use('/member', memberRouter);
+app.use('/region', regionRouter);
+app.use('/subscription', subscriptionRouter);
+app.use('/enrollment', enrollmentRouter)
 
 
 const swaggerOpts = {
