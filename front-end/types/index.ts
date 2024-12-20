@@ -1,6 +1,17 @@
 export type Member = {
     readonly id?: number;
     readonly person?: Person;
+    readonly password: string;
+};
+
+export type LoginDTO = {
+    email: string;
+    password: string;
+};
+
+export type StatusMessage = {
+    message: string;
+    type: "error" | "success";
 };
 
 export type Person = {
