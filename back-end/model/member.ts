@@ -25,7 +25,7 @@ export class Member {
         });
     }
 
-    validate(member: { id: number; person: Person; enrollments: Enrollment[]; }) {
+    validate(member: { id: number; person: Person; }) {
         if (member.person.getAge() < 16) {
             throw new Error("Person is younger than 16");
         }

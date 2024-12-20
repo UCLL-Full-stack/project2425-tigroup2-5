@@ -6,12 +6,16 @@ const prisma = new PrismaClient();
 
 const main = async () => {
 
-    await prisma.person.deleteMany();
-    await prisma.region.deleteMany();
-    await prisma.club.deleteMany();
+    await prisma.enrollment.deleteMany();
+    await prisma.subscription.deleteMany();
+    await prisma.employment.deleteMany();
     await prisma.employee.deleteMany();
     await prisma.member.deleteMany();
+    await prisma.club.deleteMany();
+    await prisma.region.deleteMany();
+    await prisma.person.deleteMany();
 
+    // Persons
     const person1 = await prisma.person.create({
         data: {
             firstName: 'John',
@@ -30,6 +34,17 @@ const main = async () => {
             birthDate: new Date('1995-01-01'),
         }
     });
+    const person3 = await prisma.person.create({
+        data: {
+            firstName: 'Alice',
+            lastName: 'Smith',
+            email: 'alice.smith@yahoo.com',
+            phone: '1234567890',
+            birthDate: new Date('1992-01-01'),
+        }
+    });
+
+    // Regions
 
     const region1 = await prisma.region.create({
         data: {
@@ -43,6 +58,32 @@ const main = async () => {
         }
     });
 
+    const region3 = await prisma.region.create({
+        data: {
+            name: 'Vlaams-Brabant',
+        }
+    });
+
+    const region4 = await prisma.region.create({
+        data: {
+            name: 'Oost-Vlaanderen',
+        }
+    });
+
+    const region5 = await prisma.region.create({
+        data: {
+            name: 'West-Vlaanderen',
+        }
+    });
+
+    const region6 = await prisma.region.create({
+        data: {
+            name: 'Waals-Brabant',
+        }
+    });
+
+
+
     const employee1 = await prisma.employee.create({
         data: {
             admin: true,
@@ -50,6 +91,18 @@ const main = async () => {
             person: {
                 connect: {
                     id: person1.id,
+                }
+            },
+        }
+    });
+
+    const employee2 = await prisma.employee.create({
+        data: {
+            admin: false,
+            title: 'Receptionist',
+            person: {
+                connect: {
+                    id: person3.id,
                 }
             },
         }

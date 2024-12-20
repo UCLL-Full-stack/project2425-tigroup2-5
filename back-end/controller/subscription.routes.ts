@@ -1,5 +1,4 @@
 import subscriptionService from '../service/subscription.service';
-import { SubscriptionInput } from '../types';
 import express, { NextFunction, Request, Response } from 'express';
 
 const subscriptionRouter = express.Router();
