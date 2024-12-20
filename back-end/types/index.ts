@@ -9,9 +9,9 @@ type PersonInput = {
     birthDate: Date;
 };
 
-type MemberInput = {
-    id?: number;
-    person: PersonInput;
+type LoginDTO = {
+    email: string;
+    password: string;
 };
 
 type EmployeeInput = {
@@ -38,12 +38,20 @@ type SubscriptionInput = {
     price: number;
 };
 
+type AuthenticationResponse = {
+    token: string;
+    email: string;
+    fullname: string;
+    role: Role;
+};
+
 export {
     Role,
     PersonInput,
-    MemberInput,
+    LoginDTO,
     EmployeeInput,
     ClubInput,
     RegionInput,
     SubscriptionInput,
+    AuthenticationResponse
 };

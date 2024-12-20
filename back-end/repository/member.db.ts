@@ -21,4 +21,13 @@ const getMemberById = async ({ id }: { id: number }): Promise<Member | null> => 
     return memberPrisma ? Member.from(memberPrisma) : null;
 }
 
-export default { getAllMembers, getMemberById };
+const getMemberByPersonEmail = async ({ email }: { email: string }): Promise<Member | null> => {
+    const memberPrisma = await database.member.findFirst({
+        where: { person: { email } },
+        include: { person: true },
+    });
+
+    return memberPrisma ? Member.from(memberPrisma) : null;
+}
+
+export default { getAllMembers, getMemberById, getMemberByPersonEmail };

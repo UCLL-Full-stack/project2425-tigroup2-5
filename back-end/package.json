@@ -24,6 +24,7 @@
         "bcrypt": "^5.1.0",
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.20.1",
+        "classnames": "^2.5.1",
         "cors": "^2.8.0",
         "courses_api": "file:",
         "date-fns": "^2.30.0",
@@ -31,7 +32,8 @@
         "express": "^4.18.0",
         "express-jwt": "^8.4.1",
         "helmet": "^7.2.0",
-        "jsonwebtoken": "^9.0.0",
+        "jsonwebtoken": "^9.0.2",
+        "jwt-utils": "^1.0.5",
         "swagger-jsdoc": "^6.2.8",
         "swagger-ui": "^5.18.2",
         "swagger-ui-express": "^4.6.0"
