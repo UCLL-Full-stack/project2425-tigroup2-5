@@ -1,10 +1,11 @@
+import { Employment as EmploymentPrisma, Employee as EmployeePrisma, Club as ClubPrisma, Region as RegionPrisma, Person as PersonPrisma } from "@prisma/client";
 import { Club } from "./club";
 import { Employee } from "./employee";
 
 export class Employment {
     readonly id?: number;
     readonly startDate: Date;
-    readonly endDate?: Date;
+    readonly endDate?: Date | null;
     readonly employee: Employee;
     readonly club: Club;
 
@@ -16,11 +17,9 @@ export class Employment {
     }) {
         this.id = Employment.id;
         this.startDate = Employment.startDate;
-        this.endDate = undefined;
+        this.endDate = null;
         this.employee = Employment.employee;
         this.club = Employment.club;
-        Employment.employee.employments.push(this);
-        Employment.club.employments.push(this);
     }
 
     equals({id, startDate, endDate, employee, club}: Employment): boolean {
@@ -31,6 +30,23 @@ export class Employment {
             this.employee.equals(employee) &&
             this.club.equals(club)
         )
+    }
+
+    static from({
+        id,
+        startDate,
+        employee,
+        club
+    } : EmploymentPrisma & {
+        employee: EmployeePrisma & {person: PersonPrisma},
+        club: ClubPrisma & {region: RegionPrisma}
+    }) {
+        return new Employment({
+            id: id,
+            startDate: startDate,
+            employee: Employee.from(employee),
+            club: Club.from(club)
+        });
     }
 
     public toString(): string {

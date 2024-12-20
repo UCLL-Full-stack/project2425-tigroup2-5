@@ -1,31 +1,41 @@
-import { Employment } from './employment';
-import { Enrollment } from './enrollment';
+import { Club as ClubPrisma, Region as RegionPrisma } from '@prisma/client';
 import { Region } from './region';
 
 export class Club {
     readonly id?: number;
     readonly address: string;
     readonly region: Region;
-    readonly employments: Employment[];
-    readonly enrollments: Enrollment[];
 
     constructor(club: {
         id?: number;
         address: string;
         region: Region;
-        employments: Employment[];
-        enrollments: Enrollment[];
     }) {
+        this.validate(club);
+        
         this.id = club.id;
         this.address = club.address;
-        this.employments = club.employments || [];
-        this.enrollments = club.enrollments || [];
         this.region = club.region;
-        club.region.clubs.push(this);
+    }
+    
+    validate(club: { id?: number; address: string; region: Region;}) {
+        // throw new Error('Method not implemented.');
     }
 
-    equals({ id, address, region }: Club): boolean {
-        return this.id === id && this.address === address && this.region.equals(region);
+    public static from({
+        id,
+        address,
+        region
+    }: ClubPrisma & { region: RegionPrisma }) {   
+        return new Club({
+            id: id,
+            address: address,
+            region: Region.from(region),
+        });
+    }
+
+    equals({ id, address }: Club): boolean {
+        return this.id === id && this.address === address;
     }
     
 

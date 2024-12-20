@@ -1,7 +1,8 @@
-import { Router } from "express";
 import regionService from "../service/region.service";
+import express, { NextFunction, Request, Response } from 'express';
 
-const regionRouter = Router();
+const regionRouter = express.Router();
+
 /**
  * @swagger
  * /:
@@ -26,14 +27,27 @@ const regionRouter = Router();
  *       500:
  *         description: Internal server error
  */
-regionRouter.get("/", async (req, res) => {
+regionRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const regions = await regionService.getAllRegions();
-        res.json(regions);
+        res.status(200).json(regions);
     } catch (error) {
-        res.status(500).send((error as Error).message);
+        next(error);
     }
 });
+
+
+regionRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const region = req.body;
+        const newRegion = await regionService.createRegion(region);
+        res.status(201).json(newRegion);
+    } catch (error) {
+        next(error);
+    }
+});
+
+
 /**
  * @swagger
  * /{id}:
@@ -65,16 +79,13 @@ regionRouter.get("/", async (req, res) => {
  *       500:
  *         description: Internal server error
  */
-regionRouter.get("/:id", async (req, res) => {
+regionRouter.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const region = await regionService.getRegionById(Number(req.params.id));
-        if (region === undefined) {
-            res.status(404).send(`Region with id ${req.params.id} not found`);
-        } else {
-            res.json(region);
-        }
+        const id = parseInt(req.params.id);
+        const region = await regionService.getRegionById(id);
+        res.status(200).json(region);
     } catch (error) {
-        res.status(500).send((error as Error).message);
+        next(error);
     }
 });
 

@@ -1,16 +1,14 @@
-import { Router } from "express";
 import enrollmentService from "../service/enrollment.service";
+import express, { NextFunction, Request, Response } from 'express';
 
-const enrollmentRouter = Router();
-/**
- * @swagger
- */
-enrollmentRouter.get("/", async (req, res) => {
+const enrollmentRouter = express.Router();
+
+enrollmentRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const enrollments = await enrollmentService.getAllEnrollments();
-        res.json(enrollments);
+        res.status(200).json(enrollments);
     } catch (error) {
-        res.status(500).send((error as Error).message);
+        next(error);
     }
 });
 
