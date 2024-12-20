@@ -12,8 +12,10 @@ import regionRouter from './controller/region.routes';
 import subscriptionRouter from './controller/subscription.routes';
 import { tr } from 'date-fns/locale';
 import enrollmentRouter from './controller/enrollment.routes';
+import helmet from 'helmet';
 
 const app = express();
+app.use(helmet());
 const port = process.env.APP_PORT || 3000;
 
 app.use(cors({ origin: 'http://localhost:8080' }));
