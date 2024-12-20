@@ -12,10 +12,10 @@ const EmploymentsPage: React.FC = () => {
     const [employments, setEmployments] = useState<Employment[]>([]);
     
     useEffect(() => {
-        getMembers();
+        getEmployments();
     }, []);
     
-    const getMembers = async () => {
+    const getEmployments = async () => {
         const response = await employmentService.getAllEmployments();
         const data = await response.json();
         setEmployments(data);

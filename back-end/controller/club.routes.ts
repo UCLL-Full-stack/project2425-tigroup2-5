@@ -12,7 +12,26 @@ clubRouter.get("/", async (req: Request, res: Response, next: NextFunction ) => 
         next(error);
     }
 });
-
+/**
+ * @swagger
+ * /clubs/{id}:
+ *   get:
+ *    summary: Get a club by id
+ *    parameters:
+ *    - in: path
+ *     name: id
+ *     schema:
+ *       type: integer
+ *       required: true
+ *       description: The club id
+ *    responses:
+ *     200:
+ *       description: A club object
+ *       content:
+ *         application/json:
+ *              schema:
+ *               $ref: '#/components/schemas/Club'
+ */
 clubRouter.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const id = parseInt(req.params.id);

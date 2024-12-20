@@ -11,7 +11,22 @@ regionRouter.get('/', async (req: Request, res: Response, next: NextFunction) =>
         next(error);
     }
 });
-
+/**
+ * @swagger
+ * /regions:
+ *  post:
+ *   summary: Create a new region
+ *    requestBody:
+ *    required: true
+ *   content:
+ *   application/json:
+ *      schema:
+ *         $ref: '#/components/schemas/Region'
+ *   responses:
+ *     200: 
+ *        description: the created region object
+ * 
+ */
 regionRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const region = req.body;
