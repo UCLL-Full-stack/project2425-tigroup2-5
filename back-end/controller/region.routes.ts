@@ -3,6 +3,43 @@ import express, { NextFunction, Request, Response } from 'express';
 
 const regionRouter = express.Router();
 
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *      Region:
+ *          type: object
+ *          properties:
+ *              id:
+ *                  type: integer
+ *                  description: The auto-generated id of the region
+ *              name:
+ *                  type: string
+ *                  description: The name of the region
+ *          example:
+ *              id: 1
+ *              name: "Region 1"
+ *
+ * tags:
+ *  name: Region
+ *  description: The regions managing API
+ * 
+ * /region:
+ *  get:
+ *      summary: Get all regions
+ *      tags: [Region]
+ *      responses:
+ *          200:
+ *              description: A list of regions
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/Region'
+ */
+
 regionRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const regions = await regionService.getAllRegions();
@@ -11,22 +48,31 @@ regionRouter.get('/', async (req: Request, res: Response, next: NextFunction) =>
         next(error);
     }
 });
+
+
 /**
  * @swagger
- * /regions:
+ * /region:
  *  post:
- *   summary: Create a new region
- *    requestBody:
- *    required: true
- *   content:
- *   application/json:
- *      schema:
- *         $ref: '#/components/schemas/Region'
- *   responses:
- *     200: 
- *        description: the created region object
- * 
+ *      summary: Create a new region
+ *      tags: [Region]
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/Region'
+ *      responses:
+ *          201:
+ *              description: The region was successfully created
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Region'
+ *          400:
+ *              description: Bad request
  */
+
 regionRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const region = req.body;
@@ -36,6 +82,31 @@ regionRouter.post('/', async (req: Request, res: Response, next: NextFunction) =
         next(error);
     }
 });
+
+
+/**
+ * @swagger
+ * /region/{id}:
+ *  get:
+ *      summary: Get a region by id
+ *      tags: [Region]
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            required: true
+ *            description: The id of the region
+ *            schema:
+ *              type: integer
+ *      responses:
+ *          200:
+ *              description: A region by id
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Region'
+ *          404:
+ *              description: Region not found
+ */
 
 regionRouter.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
     try {

@@ -52,3 +52,8 @@ export type Subscription = {
     type?: string;
     price?: number;
 };
+
+export type StatusMessage = {
+    message: string;
+    type: "error" | "success";
+};
