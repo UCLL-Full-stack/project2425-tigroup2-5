@@ -34,5 +34,4 @@ const MemberOverview: React.FC = () => {
     );
 }
 
-
 export default MemberOverview;

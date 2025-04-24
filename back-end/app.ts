@@ -12,9 +12,11 @@ import regionRouter from './controller/region.routes';
 import subscriptionRouter from './controller/subscription.routes';
 import clubRouter from './controller/club.routes';
 import enrollmentRouter from './controller/enrollment.routes';
+import helmet from 'helmet';
 import { tr } from 'date-fns/locale';
 
 const app = express();
+app.use(helmet());
 const port = process.env.APP_PORT || 3001;
 
 app.use(cors({ origin: '*' }));

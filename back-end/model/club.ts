@@ -18,8 +18,8 @@ export class Club {
         this.region = club.region;
     }
     
-    validate(club: { id?: number; address: string; region: Region; }) {
-        //throw new Error('Method not implemented.');
+    validate(club: { id?: number; address: string; region: Region;}) {
+        // throw new Error('Method not implemented.');
     }
 
     public static from({
