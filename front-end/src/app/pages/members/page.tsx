@@ -9,28 +9,49 @@ import { Member } from "@/../types";
 const MemberOverview: React.FC = () => {
     
     const [members, setMembers] = useState<Member[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
     
     useEffect(() => {
         getMembers();
     }, []);
     
     const getMembers = async () => {
-        const response = await memberService.getAllMembers();
-        const data = await response.json();
-        setMembers(data);
+        setLoading(true);
+        try {
+            const response = await memberService.getAllMembers();
+            const data = await response.json();
+            setMembers(data);
+        } catch (error) {
+            console.error("Failed to fetch members:", error);
+        } finally {
+            setLoading(false);
+        }
     }
     
     return (
-        <>
-            <Header></Header>
-            <div className="flex justify-center items-center min-h-screen">
-                <div className="bg-white p-6 rounded-lg shadow-lg">
-                    <h1 className="text-2xl text-gray-700 font-bold mb-2">Members</h1>
-                    <h2 className="text-lg text-gray-700">These are the members</h2>
-                    <MembersPage members={members}></MembersPage>
+        <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-1 container mx-auto px-4 py-8">
+                <div className="max-w-5xl mx-auto">
+                    <div className="card">
+                        <div className="p-6">
+                            <header className="mb-6">
+                                <h1 className="text-2xl font-bold">Members</h1>
+                                <p className="text-text-light">Manage and view all gym members</p>
+                            </header>
+                            
+                            {loading ? (
+                                <div className="flex justify-center py-8">
+                                    <div className="animate-pulse text-primary">Loading members...</div>
+                                </div>
+                            ) : (
+                                <MembersPage members={members} />
+                            )}
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </>
+            </main>
+        </div>
     );
 }
 

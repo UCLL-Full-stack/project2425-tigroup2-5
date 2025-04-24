@@ -1,5 +1,7 @@
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+
 const getAllEmployees = () => {
-    return fetch(process.env.NEXT_PUBLIC_API_URL + "/employee", {
+    return fetch(API_URL + "/employee", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -7,8 +9,8 @@ const getAllEmployees = () => {
     });  
 };
 
-const EmployeeService = {
+const employeeService = {
     getAllEmployees
 };
 
-export default EmployeeService;
+export default employeeService;

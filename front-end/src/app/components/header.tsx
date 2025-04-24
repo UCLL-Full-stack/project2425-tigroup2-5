@@ -20,82 +20,63 @@ const Header: React.FC = () => {
     }
 
   return (
-    <header className="p-3 mb-3 border-bottom bg-gradient-to-br from-red-200 to-red-700 flex flex-col items-center">
-      <a className="flex mb-2 md:mb-5 text-white-50 text-3xl text-gray-300">
-        AnyGym
-      </a>
-      <nav className="items-center flex md:flex-row flex-col">
-        <Link
-          href="/"
-          className="px-4 text-xl text-white  hover:bg-gray-600 rounded-lg"
-        >
-          Home
-        </Link>
-        <Link
-          href="/pages/profile"
-          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
-        >
-            profile
-        </Link>
-        <Link
-          href="/pages/members"
-          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
-        >
-            Members
-        </Link>
-        <Link
-          href="/pages/employments"
-          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
-        >
-            Employments
-        </Link>
-        <Link
-          href="/pages/employees"
-          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
-        >
-            Employees
-        </Link>
-        <Link
-          href="/pages/enrollments"
-          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
-        >
-            Enrollments
-        </Link>
-        <Link
-          href="/pages/clubs"
-          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
-        >
-            Clubs
-        </Link>
-        <Link
-          href="/pages/signup"
-          className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
-        >
-            Signup
-        </Link>
-        {!loggedInUser && (
-          <Link
-            href="/pages/login"
-            className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
-          >
-            Login
-          </Link>         
-        )}
+    <header className="bg-gradient-to-br from-primary to-primary-dark shadow-md sticky top-0 z-10">
+      <div className="container mx-auto px-4 py-3">
+        <div className="flex flex-wrap items-center justify-between">
+          <Link href="/" className="text-white text-2xl md:text-3xl font-bold">
+            AnyGym
+          </Link>
+          
+          <nav className="w-full md:w-auto mt-4 md:mt-0 flex flex-wrap justify-center md:justify-end gap-1">
+            <Link href="/" className="nav-link text-white hover:bg-white/10">
+              Home
+            </Link>
+            {loggedInUser && (
+              <Link href="/pages/profile" className="nav-link text-white hover:bg-white/10">
+                Profile
+              </Link>
+            )}
+            <Link href="/pages/members" className="nav-link text-white hover:bg-white/10">
+              Members
+            </Link>
+            <Link href="/pages/employments" className="nav-link text-white hover:bg-white/10">
+              Employments
+            </Link>
+            <Link href="/pages/employees" className="nav-link text-white hover:bg-white/10">
+              Employees
+            </Link>
+            <Link href="/pages/enrollments" className="nav-link text-white hover:bg-white/10">
+              Enrollments
+            </Link>
+            <Link href="/pages/clubs" className="nav-link text-white hover:bg-white/10">
+              Clubs
+            </Link>
+            <Link href="/pages/signup" className="nav-link text-white hover:bg-white/10">
+              Signup
+            </Link>
+            {!loggedInUser && (
+              <Link href="/pages/login" className="nav-link text-white bg-accent/80 hover:bg-accent">
+                Login
+              </Link>         
+            )}
+            {loggedInUser && (
+              <a
+                href="/pages/login"
+                onClick={handleClick}
+                className="nav-link text-white bg-accent/80 hover:bg-accent"
+              >
+                Logout
+              </a>
+            )}
+          </nav>
+        </div>
+        
         {loggedInUser && (
-          <a
-            href="/pages/login"
-            onClick={handleClick}
-            className="px-4 text-white text-xl hover:bg-gray-600 rounded-lg"
-          >
-            logout
-          </a>
-        )}
-        {loggedInUser && (
-          <div className="text-white ms-5 mt-2 md:mt-0 pt-1 md:pt-0 grow">
-            {t("header.welcome")},  {loggedInUser}!
+          <div className="text-white text-sm mt-2 pb-1 text-center md:text-right">
+            {t("header.welcome")}, <span className="font-medium">{loggedInUser}</span>!
           </div>
         )}
-      </nav>
+      </div>
     </header>
   );
 };

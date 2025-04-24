@@ -9,29 +9,50 @@ import employeeService from "@/../service/employeeService";
 const EmployeesPage: React.FC = () => {
     
     const [employees, setEmployees] = useState<Employee[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         fetchEmployees();
     }, []);
 
     const fetchEmployees = async () => {
-        const response = await employeeService.getAllEmployees();
-        const data = await response.json();
-        setEmployees(data);
+        setLoading(true);
+        try {
+            const response = await employeeService.getAllEmployees();
+            const data = await response.json();
+            setEmployees(data);
+        } catch (error) {
+            console.error("Failed to fetch employees:", error);
+        } finally {
+            setLoading(false);
+        }
     }
     
     return (
-        <>
-        <Header></Header>
-        <div className="flex justify-center items-center min-h-screen">
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-                <h1 className="text-2xl text-gray-700 font-bold mb-2">Employees</h1>
-                <h2 className="text-lg text-gray-700">These are the employmees</h2>
-                <EmployeeOverview employees={employees}></EmployeeOverview>
-            </div>
+        <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-1 container mx-auto px-4 py-8">
+                <div className="max-w-5xl mx-auto">
+                    <div className="card">
+                        <div className="p-6">
+                            <header className="mb-6">
+                                <h1 className="text-2xl font-bold">Employees</h1>
+                                <p className="text-text-light">View and manage gym staff</p>
+                            </header>
+                            
+                            {loading ? (
+                                <div className="flex justify-center py-8">
+                                    <div className="animate-pulse text-primary">Loading employees...</div>
+                                </div>
+                            ) : (
+                                <EmployeeOverview employees={employees} />
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
-    </>
-    )
+    );
 }
 
 export default EmployeesPage;

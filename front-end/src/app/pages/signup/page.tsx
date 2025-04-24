@@ -1,10 +1,10 @@
 import Header from "@/app/components/header";
 import SignupScreen from "@/app/components/signup/signup";
 
-export default function Employments() { 
+export default function Signup() { 
     return (
-        <>
-        <SignupScreen></SignupScreen>
-    </>
+        <div className="flex flex-col min-h-screen">
+            <SignupScreen />
+        </div>
     )
 }

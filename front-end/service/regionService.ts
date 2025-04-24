@@ -1,5 +1,7 @@
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+
 const getAllRegions = () => {
-    return fetch(process.env.NEXT_PUBLIC_API_URL + "/Region", {
+    return fetch(API_URL + "/region", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -7,8 +9,8 @@ const getAllRegions = () => {
     });  
 };
 
-const RegionService = {
+const regionService = {
     getAllRegions
 };
 
-export default RegionService;
+export default regionService;
