@@ -1,85 +1,86 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Person {
-    id        Int       @id @default(autoincrement())
-    firstName String
-    lastName  String
-    email     String    @unique
-    phone     String
-    birthDate DateTime
-    member    Member?
-    employee  Employee?
+  id        Int       @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String    @unique
+  phone     String
+  birthDate DateTime?
+  employee  Employee?
+  member    Member?
 }
 
 model Member {
-    id          Int          @id @default(autoincrement())
-    personId    Int          @unique
-    person      Person       @relation(fields: [personId], references: [id])
-    enrollments Enrollment[]
-    username    String
-    password    String
+  id          Int          @id @default(autoincrement())
+  personId    Int          @unique
+  username    String
+  password    String
+  enrollments Enrollment[]
+  person      Person       @relation(fields: [personId], references: [id])
 }
 
 model Employee {
-    id          Int          @id @default(autoincrement())
-    admin       Boolean
-    title       String
-    personId    Int          @unique
-    person      Person       @relation(fields: [personId], references: [id])
-    salary      Float        @default(0)
-    employments Employment[]
+  id          Int          @id @default(autoincrement())
+  admin       Boolean
+  title       String
+  personId    Int          @unique
+  salary      Float        @default(0)
+  password    String?      // Adding password field as optional to avoid migration issues with existing records
+  person      Person       @relation(fields: [personId], references: [id])
+  employments Employment[]
 }
 
 model Employment {
-    id         Int      @id @default(autoincrement())
-    startDate  DateTime @default(now())
-    endDate    DateTime
-    employeeId Int
-    employee   Employee @relation(fields: [employeeId], references: [id])
-    clubId     Int
-    club       Club     @relation(fields: [clubId], references: [id])
+  id         Int      @id @default(autoincrement())
+  startDate  DateTime @default(now())
+  endDate    DateTime
+  employeeId Int
+  clubId     Int
+  club       Club     @relation(fields: [clubId], references: [id])
+  employee   Employee @relation(fields: [employeeId], references: [id])
 }
 
 model Region {
-    id          Int          @id @default(autoincrement())
-    name        String
-    enrollments Enrollment[]
-    clubs       Club[]
+  id          Int          @id @default(autoincrement())
+  name        String
+  clubs       Club[]
+  enrollments Enrollment[]
 }
 
 model Club {
-    id          Int          @id @default(autoincrement())
-    address     String
-    enrollments Enrollment[]
-    employments Employment[]
-    regionId    Int
-    region      Region       @relation(fields: [regionId], references: [id])
+  id          Int          @id @default(autoincrement())
+  address     String
+  regionId    Int
+  region      Region       @relation(fields: [regionId], references: [id])
+  employments Employment[]
+  enrollments Enrollment[]
 }
 
 model Subscription {
-    id          Int          @id @default(autoincrement())
-    type        String
-    price       Float
-    enrollments Enrollment[]
+  id          Int          @id @default(autoincrement())
+  type        String
+  price       Float
+  enrollments Enrollment[]
 }
 
 model Enrollment {
-    id             Int          @id @default(autoincrement())
-    memberId       Int
-    member         Member       @relation(fields: [memberId], references: [id])
-    subscriptionId Int
-    subscription   Subscription @relation(fields: [subscriptionId], references: [id])
-    regionId       Int?
-    region         Region?      @relation(fields: [regionId], references: [id])
-    clubId         Int?
-    club           Club?        @relation(fields: [clubId], references: [id])
-    enrollmentDate DateTime
-    expirationDate DateTime
+  id             Int          @id @default(autoincrement())
+  memberId       Int
+  subscriptionId Int
+  regionId       Int?
+  clubId         Int?
+  enrollmentDate DateTime
+  expirationDate DateTime
+  club           Club?        @relation(fields: [clubId], references: [id])
+  member         Member       @relation(fields: [memberId], references: [id])
+  region         Region?      @relation(fields: [regionId], references: [id])
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id])
 }

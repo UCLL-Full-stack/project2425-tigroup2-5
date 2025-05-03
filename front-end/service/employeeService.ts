@@ -9,8 +9,25 @@ const getAllEmployees = () => {
     });  
 };
 
+const createEmployee = (employeeData: { 
+    personId: number; 
+    admin: boolean; 
+    title: string; 
+    salary?: number;
+    password: string;
+}) => {
+    return fetch(API_URL + "/employee", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(employeeData),
+    });
+};
+
 const employeeService = {
-    getAllEmployees
+    getAllEmployees,
+    createEmployee
 };
 
 export default employeeService;

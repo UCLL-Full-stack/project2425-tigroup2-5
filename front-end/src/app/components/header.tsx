@@ -1,23 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useTranslation } from "next-i18next";
-
+import { useAuth } from "./auth/AuthContext";
 
 const Header: React.FC = () => {
-  const { t } = useTranslation();
-    const [loggedInUser, setLoggedInUser] = useState<string | null>(null);
-    useEffect(() => {
-      const user = localStorage.getItem("user");
-      if (user) {
-        setLoggedInUser(user);
-      }
-    }, []);
-    const handleClick = () => {
-      localStorage.removeItem("user");
-      setLoggedInUser(null);
-    }
+  const { user, logout, isAuthenticated, isAdmin } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+  };
+  
+  const isEmployee = user?.role === 'employee' || isAdmin;
 
   return (
     <header className="bg-gradient-to-br from-primary to-primary-dark shadow-md sticky top-0 z-10">
@@ -31,49 +24,65 @@ const Header: React.FC = () => {
             <Link href="/" className="nav-link text-white hover:bg-white/10">
               Home
             </Link>
-            {loggedInUser && (
+            
+            {isAuthenticated && (
               <Link href="/pages/profile" className="nav-link text-white hover:bg-white/10">
                 Profile
               </Link>
             )}
-            <Link href="/pages/members" className="nav-link text-white hover:bg-white/10">
-              Members
-            </Link>
-            <Link href="/pages/employments" className="nav-link text-white hover:bg-white/10">
-              Employments
-            </Link>
-            <Link href="/pages/employees" className="nav-link text-white hover:bg-white/10">
-              Employees
-            </Link>
-            <Link href="/pages/enrollments" className="nav-link text-white hover:bg-white/10">
-              Enrollments
-            </Link>
+            
+            {(isEmployee || isAdmin) && (
+              <>
+                <Link href="/pages/members" className="nav-link text-white hover:bg-white/10">
+                  Members
+                </Link>
+                <Link href="/pages/enrollments" className="nav-link text-white hover:bg-white/10">
+                  Enrollments
+                </Link>
+              </>
+            )}
+            
+            {isAdmin && (
+              <>
+                <Link href="/pages/employments" className="nav-link text-white hover:bg-white/10">
+                  Employments
+                </Link>
+                <Link href="/pages/employees" className="nav-link text-white hover:bg-white/10">
+                  Employees
+                </Link>
+              </>
+            )}
+            
             <Link href="/pages/clubs" className="nav-link text-white hover:bg-white/10">
               Clubs
             </Link>
-            <Link href="/pages/signup" className="nav-link text-white hover:bg-white/10">
-              Signup
-            </Link>
-            {!loggedInUser && (
-              <Link href="/pages/login" className="nav-link text-white bg-accent/80 hover:bg-accent">
-                Login
-              </Link>         
+            
+            {!isAuthenticated && (
+              <>
+                <Link href="/pages/signup" className="nav-link text-white hover:bg-white/10">
+                  Signup
+                </Link>
+                <Link href="/pages/login" className="nav-link text-white bg-accent/80 hover:bg-accent">
+                  Login
+                </Link>
+              </>
             )}
-            {loggedInUser && (
-              <a
-                href="/pages/login"
-                onClick={handleClick}
+            
+            {isAuthenticated && (
+              <button
+                onClick={handleLogout}
                 className="nav-link text-white bg-accent/80 hover:bg-accent"
               >
                 Logout
-              </a>
+              </button>
             )}
           </nav>
         </div>
         
-        {loggedInUser && (
+        {isAuthenticated && user && (
           <div className="text-white text-sm mt-2 pb-1 text-center md:text-right">
-            {t("header.welcome")}, <span className="font-medium">{loggedInUser}</span>!
+            Welcome, <span className="font-medium">{user.firstname} {user.surname}</span>
+            {user.role && <span className="ml-1 text-xs opacity-75">({user.role})</span>}
           </div>
         )}
       </div>

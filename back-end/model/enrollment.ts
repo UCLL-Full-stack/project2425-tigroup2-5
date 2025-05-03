@@ -12,6 +12,8 @@ export class Enrollment {
     readonly member: Member;
     readonly club?: Club | null;
     readonly region?: Region | null;
+    readonly enrollmentDate: Date;
+    readonly expirationDate: Date | null;
 
     // constructor
     constructor(Enrollment: {
@@ -20,15 +22,18 @@ export class Enrollment {
         member: Member,
         club: Club | null,
         region: Region | null,
+        enrollmentDate: Date,
+        expirationDate: Date | null
     }) {
         this.id = Enrollment.id;
         this.subscription = Enrollment.subscription;
         this.member = Enrollment.member;
         this.club = Enrollment.club;
         this.region = Enrollment.region;
+        this.enrollmentDate = Enrollment.enrollmentDate ? fromUnixTime(Enrollment.enrollmentDate.getTime()) : new Date();
+        this.expirationDate = Enrollment.expirationDate ? fromUnixTime(Enrollment.expirationDate.getTime()) : null;
     }
 
-    // equals
     equals({id, subscription, member, club, region}: Enrollment): boolean {
         return (
             this.id === id &&
@@ -55,6 +60,8 @@ export class Enrollment {
             member: Member.from(member),
             club: club ? Club.from(club) : null,
             region: region ? Region.from(region) : null,
+            enrollmentDate: new Date(),
+            expirationDate: null
         });
     }
 

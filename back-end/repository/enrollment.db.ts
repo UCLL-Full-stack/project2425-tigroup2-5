@@ -51,4 +51,66 @@ const getEnrollmentById = async (id: number): Promise<Enrollment | null> => {
     return Enrollment.from(enrollmentPrisma);
 }
 
-export default { getAllEnrollments, getEnrollmentById };
+const createEnrollment = async (enrollmentData: { 
+    memberId: number; 
+    subscriptionId: number; 
+    clubId?: number | null; 
+    regionId?: number | null; 
+    enrollmentDate: Date; 
+    expirationDate: Date 
+}): Promise<Enrollment> => {
+    const { memberId, subscriptionId, clubId, regionId, enrollmentDate, expirationDate } = enrollmentData;
+
+    const enrollmentPrisma = await database.enrollment.create({
+        data: {
+            memberId,
+            subscriptionId,
+            clubId: clubId || undefined,
+            regionId: regionId || undefined,
+            enrollmentDate,
+            expirationDate
+        },
+        include: {
+            member: {
+                include: {
+                    person: true
+                }
+            },
+            subscription: true,
+            region: true,
+            club: {
+                include: {
+                    region: true
+                }
+            }
+        }
+    });
+
+    return Enrollment.from(enrollmentPrisma);
+}
+
+const getEnrollmentsByMemberId = async (memberId: number): Promise<Enrollment[]> => {
+    const enrollmentsPrisma = await database.enrollment.findMany({
+        where: {
+            memberId: memberId
+        },
+        include: {
+            member: {
+                include: {
+                    person: true
+                }
+            },
+            subscription: true,
+            region: true,
+            club: {
+                include: {
+                    region: true
+                }
+            }
+        }
+    });
+
+    return enrollmentsPrisma.map((enrollmentPrisma) => Enrollment.from(enrollmentPrisma));
+}
+
+export default { getAllEnrollments, getEnrollmentById, createEnrollment, getEnrollmentsByMemberId };

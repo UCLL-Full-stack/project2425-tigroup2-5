@@ -63,6 +63,47 @@ const employeeRouter = Router();
  *                          type: array
  *                          items:
  *                              $ref: '#/components/schemas/Employee'
+ *  post:
+ *      summary: Create a new employee
+ *      tags: [Employee]
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      required:
+ *                          - personId
+ *                          - admin
+ *                          - title
+ *                          - password
+ *                      properties:
+ *                          personId:
+ *                              type: integer
+ *                              description: The ID of an existing person
+ *                          admin:
+ *                              type: boolean
+ *                              description: Whether the employee is an admin
+ *                          title:
+ *                              type: string
+ *                              description: The title of the employee
+ *                          salary:
+ *                              type: number
+ *                              description: The salary of the employee
+ *                          password:
+ *                              type: string
+ *                              description: The employee's password
+ *      responses:
+ *          201:
+ *              description: Employee created successfully
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Employee'
+ *          400:
+ *              description: Invalid input data
+ *          500:
+ *              description: Server error
  */
 
 employeeRouter.get("/", async (req, res) => {
@@ -74,6 +115,32 @@ employeeRouter.get("/", async (req, res) => {
     }
 });
 
+employeeRouter.post("/", async (req, res) => {
+    try {
+        const { personId, admin, title, salary, password } = req.body;
+        
+        if (!personId || admin === undefined || !title || !password) {
+            return res.status(400).json({ 
+                message: "PersonId, admin status, title, and password are required" 
+            });
+        }
+        
+        const newEmployee = await employeeService.createEmployee({
+            id: Number(personId),
+            admin: Boolean(admin),
+            title,
+            salary: salary ? Number(salary) : 0,
+            password
+        });
+        
+        // Remove password from response for security
+        const { password: _, ...employeeWithoutPassword } = newEmployee;
+        
+        res.status(201).json(employeeWithoutPassword);
+    } catch (error) {
+        res.status(500).send((error as Error).message);
+    }
+});
 
 /**
  * @swagger

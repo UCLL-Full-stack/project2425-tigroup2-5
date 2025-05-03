@@ -9,19 +9,22 @@ export class Employee {
     readonly title: string;
     readonly person: Person;
     readonly salary: number;
+    password?: string;  // Changed from 'any' to 'string?' to match the schema
 
     constructor(Employee:{
         id: number,
         admin: boolean,
         title: string,
         person: Person,
-        salary: number
+        salary: number,
+        password?: string  // Added password as an optional parameter
     }) {
         this.id = Employee.id;
         this.admin = Employee.admin;
         this.title = Employee.title;
         this.person = Employee.person;
         this.salary = Employee.salary;
+        this.password = Employee.password;  // Set password from constructor
     }
     
     equals({id, person, salary}: Employee): boolean {
@@ -38,13 +41,15 @@ export class Employee {
         title,
         person,
         salary,
+        password  // Added password parameter
     } : EmployeePrisma & {person: PersonPrisma} ) {
         return new Employee({
             id: id,
             admin: admin,
             title: title,
             person: Person.from(person),
-            salary: salary
+            salary: salary,
+            password: password ?? undefined  // Coalesce null to undefined
         });
     }
 }

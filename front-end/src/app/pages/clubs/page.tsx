@@ -34,9 +34,14 @@ const Clubs:React.FC = () => {
                 <div className="max-w-5xl mx-auto">
                     <div className="card">
                         <div className="p-6">
-                            <header className="mb-6">
-                                <h1 className="text-2xl font-bold">Clubs</h1>
-                                <p className="text-text-light">View and manage gym locations</p>
+                            <header className="mb-6 flex justify-between items-center">
+                                <div>
+                                    <h1 className="text-2xl font-bold">Clubs</h1>
+                                    <p className="text-text-light">View and manage gym locations</p>
+                                </div>
+                                <a href="/pages/clubs/add" className="btn btn-primary">
+                                    Add Club
+                                </a>
                             </header>
                             
                             {loading ? (

@@ -29,4 +29,24 @@ const getClubById = async (id: number): Promise<Club | null> => {
     return Club.from(clubPrisma);
 }
 
-export default { getAllClubs, getClubById };
+const createClub = async (clubData: Partial<Club> & { regionId: number }): Promise<Club> => {
+    const { address, regionId } = clubData;
+    if (!address || !regionId) {
+        throw new Error("Address and regionId are required");
+    }
+    const newClub = await database.club.create({
+        data: {
+            address,
+            region: {
+                connect: {
+                    id: regionId
+                }
+            }
+        },
+        include: {
+            region: true 
+        }
+    });
+    return Club.from(newClub);
+};
+export default { getAllClubs, getClubById, createClub };

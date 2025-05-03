@@ -12,6 +12,7 @@ import regionRouter from './controller/region.routes';
 import subscriptionRouter from './controller/subscription.routes';
 import clubRouter from './controller/club.routes';
 import enrollmentRouter from './controller/enrollment.routes';
+import authRouter from './controller/auth.routes';
 import helmet from 'helmet';
 import { tr } from 'date-fns/locale';
 
@@ -19,13 +20,24 @@ const app = express();
 app.use(helmet());
 const port = process.env.APP_PORT || 3001;
 
-app.use(cors({ origin: '*' }));
+// Configure CORS for security
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+
 app.use(bodyParser.json());
 
 app.get('/status', (req, res) => {
     res.json({ message: 'Back-end is running...' });
 });
 
+// Auth routes
+app.use('/auth', authRouter);
+
+// Existing routes
 app.use('/person', personRouter);
 app.use('/member', memberRouter);
 app.use('/region', regionRouter);
@@ -44,6 +56,15 @@ const swaggerOpts = {
             version: '1.0.0',
             description: 'A simple Express API for managing subscriptions',
         },
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT'
+                }
+            }
+        }
     },
     apis: ['./controller/*.routes.ts'],
 };

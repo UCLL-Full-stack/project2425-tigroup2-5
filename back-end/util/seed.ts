@@ -1,8 +1,10 @@
 // execute npx ts-node util/seed.ts to seed the database
 
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
+const SALT_ROUNDS = 10;
 
 const main = async () => {
 
@@ -82,12 +84,16 @@ const main = async () => {
         }
     });
 
-
+    // Hash passwords before storing
+    const adminPassword = await bcrypt.hash('admin123', SALT_ROUNDS);
+    const employeePassword = await bcrypt.hash('employee123', SALT_ROUNDS);
+    const memberPassword = await bcrypt.hash('password', SALT_ROUNDS);
 
     const employee1 = await prisma.employee.create({
         data: {
             admin: true,
             title: 'Manager',
+            password: adminPassword, // Store hashed password
             person: {
                 connect: {
                     id: person1.id,
@@ -100,6 +106,7 @@ const main = async () => {
         data: {
             admin: false,
             title: 'Receptionist',
+            password: employeePassword, // Store hashed password
             person: {
                 connect: {
                     id: person3.id,
@@ -116,7 +123,7 @@ const main = async () => {
                 }
             }, 
             username: 'jane.doe',
-            password: 'password', 
+            password: memberPassword, // Store hashed password
         }
     });
 
@@ -173,9 +180,10 @@ const main = async () => {
 (async () => {
     try {
         await main();
+        console.log('Database seeded successfully!');
         await prisma.$disconnect();
     } catch (error) {
-        console.error(error);
+        console.error('Error seeding database:', error);
         await prisma.$disconnect();
         process.exit(1);
     }

@@ -9,8 +9,19 @@ const getAllClubs = () => {
     });  
 };
 
+const createClub = (clubData: { address: string; regionId: number }) => {
+    return fetch(API_URL + "/club", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(clubData),
+    });
+};
+
 const clubService = {
-    getAllClubs
+    getAllClubs,
+    createClub
 };
 
 export default clubService;

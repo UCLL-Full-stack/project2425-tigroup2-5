@@ -1,5 +1,4 @@
 import { Subscription } from "../../../../types";
-import Header from "../header";
 
 type Props = {
     subscriptions: Array<Subscription>;
@@ -28,7 +27,7 @@ const SubscriptionOverview: React.FC<Props> = ({subscriptions}) => {
                                             <td>{subscription.type}</td>
                                             <td>{subscription.price}</td>
                                         </tr>
-                                    ))}
+                                    ))} 
                                 </tbody>
                             </table>
                         </div>

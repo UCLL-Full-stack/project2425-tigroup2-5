@@ -34,9 +34,14 @@ const EnrollmentsPage: React.FC = () => {
                 <div className="max-w-5xl mx-auto">
                     <div className="card">
                         <div className="p-6">
-                            <header className="mb-6">
-                                <h1 className="text-2xl font-bold">Enrollments</h1>
-                                <p className="text-text-light">View and manage member enrollments</p>
+                            <header className="mb-6 flex justify-between items-center">
+                                <div>
+                                    <h1 className="text-2xl font-bold">Enrollments</h1>
+                                    <p className="text-text-light">View and manage member enrollments</p>
+                                </div>
+                                <a href="/pages/enrollments/add" className="btn btn-primary">
+                                    Add Enrollment
+                                </a>
                             </header>
                             
                             {loading ? (

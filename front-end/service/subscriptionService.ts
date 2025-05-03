@@ -1,3 +1,5 @@
+import apiClient from './apiClient';
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 const getAllSubscriptions = () => {
@@ -9,8 +11,13 @@ const getAllSubscriptions = () => {
     });  
 };
 
+const getMemberSubscriptions = async (memberId: number) => {
+    return apiClient.get(`/member/${memberId}/subscriptions`);
+};
+
 const subscriptionService = {
-    getAllSubscriptions
+    getAllSubscriptions,
+    getMemberSubscriptions
 };
 
 export default subscriptionService;

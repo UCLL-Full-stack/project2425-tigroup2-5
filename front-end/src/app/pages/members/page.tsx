@@ -18,9 +18,9 @@ const MemberOverview: React.FC = () => {
     const getMembers = async () => {
         setLoading(true);
         try {
-            const response = await memberService.getAllMembers();
-            const data = await response.json();
-            setMembers(data);
+            // memberService already returns the parsed JSON data
+            const members = await memberService.getAllMembers();
+            setMembers(members);
         } catch (error) {
             console.error("Failed to fetch members:", error);
         } finally {

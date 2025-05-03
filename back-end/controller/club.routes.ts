@@ -1,6 +1,6 @@
-
 import express, { NextFunction, Request, Response } from 'express';
 import clubService from "../service/club.service";
+import regionService from '../service/region.service';
 
 const clubRouter = express.Router();
 
@@ -46,6 +46,36 @@ const clubRouter = express.Router();
  *                          type: array
  *                          items:
  *                              $ref: '#/components/schemas/Club'
+ *  post:
+ *      summary: Create a new club
+ *      tags: [Club]
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      required:
+ *                          - address
+ *                          - regionId
+ *                      properties:
+ *                          address:
+ *                              type: string
+ *                              description: The address of the club
+ *                          regionId:
+ *                              type: integer
+ *                              description: The ID of the region for the club
+ *      responses:
+ *          201:
+ *              description: Club created successfully
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Club'
+ *          400:
+ *              description: Invalid input data
+ *          500:
+ *              description: Server error
  */
 
 clubRouter.get("/", async (req: Request, res: Response, next: NextFunction ) => {
@@ -57,6 +87,24 @@ clubRouter.get("/", async (req: Request, res: Response, next: NextFunction ) => 
     }
 });
 
+clubRouter.post("/", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { address, regionId } = req.body;
+        
+        if (!address || !regionId) {
+            return res.status(400).json({ message: "Address and regionId are required" });
+        }
+        
+        const region = await regionService.getRegionById(Number(regionId));
+        if (!region) {
+            return res.status(400).json({ message: "Invalid regionId" });
+        }
+        const newClub = await clubService.createClub({ address, region });
+        res.status(201).json(newClub);
+    } catch (error) {
+        next(error);
+    }
+});
 
 /**
  * @swagger

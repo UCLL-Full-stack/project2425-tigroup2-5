@@ -1,5 +1,9 @@
 import express, { NextFunction, Request, Response } from 'express';
 import enrollmentService from "../service/enrollment.service";
+import subscriptionService from '../service/subscription.service';
+import memberService from '../service/member.service';
+import clubService from '../service/club.service';
+import regionService from '../service/region.service';
 
 const enrollmentRouter = express.Router();
 /**
@@ -61,6 +65,52 @@ const enrollmentRouter = express.Router();
  *                          type: array
  *                          items:
  *                              $ref: '#/components/schemas/Enrollment'
+ *  post:
+ *      summary: Create a new enrollment
+ *      tags: [Enrollment]
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      required:
+ *                          - memberId
+ *                          - subscriptionId
+ *                          - enrollmentDate
+ *                          - expirationDate
+ *                      properties:
+ *                          memberId:
+ *                              type: integer
+ *                              description: The ID of the member
+ *                          subscriptionId:
+ *                              type: integer
+ *                              description: The ID of the subscription
+ *                          clubId:
+ *                              type: integer
+ *                              description: The ID of the club (required for club subscriptions)
+ *                          regionId:
+ *                              type: integer
+ *                              description: The ID of the region (required for regional subscriptions)
+ *                          enrollmentDate:
+ *                              type: string
+ *                              format: date-time
+ *                              description: The start date of the enrollment
+ *                          expirationDate:
+ *                              type: string
+ *                              format: date-time
+ *                              description: The expiration date of the enrollment
+ *      responses:
+ *          201:
+ *              description: Enrollment created successfully
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Enrollment'
+ *          400:
+ *              description: Invalid input data
+ *          500:
+ *              description: Server error
  */
 
 enrollmentRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
@@ -101,6 +151,132 @@ enrollmentRouter.get("/:id", async (req: Request, res: Response, next: NextFunct
         const id = parseInt(req.params.id);
         const enrollment = await enrollmentService.getEnrollmentById(id);
         res.status(200).json(enrollment);
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
+ * /enrollment:
+ *  post:
+ *      summary: Create a new enrollment
+ *      tags: [Enrollment]
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      required:
+ *                          - memberId
+ *                          - subscriptionId
+ *                          - enrollmentDate
+ *                          - expirationDate
+ *                      properties:
+ *                          memberId:
+ *                              type: integer
+ *                              description: The ID of the member
+ *                          subscriptionId:
+ *                              type: integer
+ *                              description: The ID of the subscription
+ *                          clubId:
+ *                              type: integer
+ *                              description: The ID of the club (required for club subscriptions)
+ *                          regionId:
+ *                              type: integer
+ *                              description: The ID of the region (required for regional subscriptions)
+ *                          enrollmentDate:
+ *                              type: string
+ *                              format: date-time
+ *                              description: The start date of the enrollment
+ *                          expirationDate:
+ *                              type: string
+ *                              format: date-time
+ *                              description: The expiration date of the enrollment
+ *      responses:
+ *          201:
+ *              description: Enrollment created successfully
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Enrollment'
+ *          400:
+ *              description: Invalid input data
+ *          500:
+ *              description: Server error
+ */
+
+enrollmentRouter.post("/", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { 
+            memberId, 
+            subscriptionId, 
+            clubId, 
+            regionId, 
+            enrollmentDate, 
+            expirationDate 
+        } = req.body;
+        
+        if (!memberId || !subscriptionId) {
+            return res.status(400).json({ 
+                message: "MemberId and subscriptionId are required" 
+            });
+        }
+        
+        const subscription = await subscriptionService.getSubscriptionById(Number(subscriptionId));
+        if (!subscription) {
+            return res.status(400).json({ message: "Invalid subscriptionId" });
+        }
+
+        const member = await memberService.getMemberById(Number(memberId));
+        if (!member) {
+            return res.status(400).json({ message: "Invalid memberId" });
+        }
+
+        // Check club ID if provided
+        let club = undefined;
+        if (clubId) {
+            club = await clubService.getClubById(Number(clubId));
+            if (!club) {
+                return res.status(400).json({ message: "Invalid clubId" });
+            }
+        }
+
+        // Check region ID if provided
+        let region = undefined;
+        if (regionId) {
+            region = await regionService.getRegionById(Number(regionId));
+            if (!region) {
+                return res.status(400).json({ message: "Invalid regionId" });
+            }
+        }
+
+        // Validate subscription type with provided IDs
+        if (subscription.type === "Club" && !clubId) {
+            return res.status(400).json({ message: "Club subscription requires a clubId" });
+        }
+        
+        if (subscription.type === "Regional" && !regionId) {
+            return res.status(400).json({ message: "Regional subscription requires a regionId" });
+        }
+
+        // Parse dates if provided
+        const enrollmentStartDate = enrollmentDate ? new Date(enrollmentDate) : undefined;
+        const enrollmentEndDate = expirationDate ? new Date(expirationDate) : undefined;
+
+        // Create enrollment data object
+        const enrollmentData = {
+            member,
+            subscription,
+            club,
+            region,
+            enrollmentDate: enrollmentStartDate,
+            expirationDate: enrollmentEndDate
+        };
+        
+        const newEnrollment = await enrollmentService.createEnrollment(enrollmentData);
+        res.status(201).json(newEnrollment);
     } catch (error) {
         next(error);
     }

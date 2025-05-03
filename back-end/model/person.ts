@@ -6,7 +6,7 @@ export class Person {
     readonly surname: string;
     readonly email: string;
     readonly phone: string;
-    readonly birthDate: Date;
+    readonly birthDate?: Date;
 
     constructor(Person:{
         id: number,
@@ -14,7 +14,7 @@ export class Person {
         surname: string,
         email: string,
         phone: string,
-        birthDate: Date,
+        birthDate?: Date,
     }) {
 
         this.validate(Person);
@@ -26,7 +26,7 @@ export class Person {
         this.phone = Person.phone;
         this.birthDate = Person.birthDate;
     }
-    validate(Person: { id: number; firstname: string; surname: string; email: string; phone: string; birthDate: Date; }) {
+    validate(Person: { id: number; firstname: string; surname: string; email: string; phone: string; birthDate?: Date; }) {
 
         if (Person.firstname.length < 2) {
             throw new Error("Invalid firstname");
@@ -44,7 +44,7 @@ export class Person {
             throw new Error("Invalid phone");
         }
 
-        if (Person.birthDate > new Date() || Person.birthDate === null) {
+        if (Person.birthDate && (Person.birthDate > new Date())) {
             throw new Error("Invalid birth date");
         }
     }
@@ -60,7 +60,9 @@ export class Person {
         )
     }
     
-    public getAge(): number {
+    public getAge(): number | undefined {
+        if (!this.birthDate) return undefined;
+        
         const today = new Date();
         let age = today.getFullYear() - this.birthDate.getFullYear();
         const monthDiff = today.getMonth() - this.birthDate.getMonth();
@@ -77,19 +79,26 @@ export class Person {
         email,
         phone,
         birthDate,
-    } : PersonPrisma ) {
+    } : {
+        id: number;
+        firstName: string;
+        lastName: string;
+        email: string;
+        phone: string;
+        birthDate?: Date | null;
+    }) {
         return new Person({
             id: id,
             firstname: firstName,
             surname: lastName,
             email: email,
             phone: phone,
-            birthDate: birthDate,
+            birthDate: birthDate || undefined,
         });
     }
 
     public toString(): string {
-        return `Person [id=${this.id}, firstname=${this.firstname}, surname=${this.surname}, email=${this.email}, phone=${this.phone}, birthDate=${this.birthDate}]`;
+        return `Person [id=${this.id}, firstname=${this.firstname}, surname=${this.surname}, email=${this.email}, phone=${this.phone}, birthDate=${this.birthDate || 'Not provided'}]`;
     }
 
 }
