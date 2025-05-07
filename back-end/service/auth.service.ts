@@ -245,6 +245,23 @@ const resetPassword = async (token: string, newPassword: string): Promise<boolea
   return true;
 };
 
+/**
+ * Logout a user by blacklisting their token
+ */
+const logout = (token: string): boolean => {
+  try {
+    // Import the blacklistToken function
+    const { blacklistToken } = require('../middleware/auth.middleware');
+    
+    // Add the token to the blacklist
+    blacklistToken(token);
+    return true;
+  } catch (error) {
+    console.error('Error during logout:', error);
+    return false;
+  }
+};
+
 export default {
   authenticateMember,
   authenticateEmployee,
@@ -252,5 +269,6 @@ export default {
   verifyToken,
   generateResetToken,
   verifyResetToken,
-  resetPassword
+  resetPassword,
+  logout
 };

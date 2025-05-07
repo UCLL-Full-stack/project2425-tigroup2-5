@@ -120,10 +120,15 @@ router.post('/register', authRateLimiter, async (req: Request, res: Response) =>
       return res.status(400).json({ message: 'All fields are required' });
     }
 
-    // Check if member with this email already exists
+    // Check if member with this email already exists but don't reveal this information
     const existingMember = await authService.authenticateMember(email, 'dummy-password').catch(() => null);
     if (existingMember) {
-      return res.status(409).json({ message: 'Email already in use' });
+      // Instead of revealing that the email exists, return a generic success response
+      // This prevents user enumeration attacks
+      console.log(`Registration attempt with existing email: ${email}`);
+      return res.status(200).json({
+        message: 'If the email is not already registered, an account will be created. Please check your email for verification instructions.'
+      });
     }
 
     const member = await authService.registerMember({
@@ -146,14 +151,10 @@ router.post('/register', authRateLimiter, async (req: Request, res: Response) =>
       }
     });
 
-    return res.status(201).json({
-      message: 'Registration successful',
-      member: {
-        id: member.id,
-        email: member.person?.email,
-        firstname: member.person?.firstname,
-        surname: member.person?.surname
-      }
+    // Return a similar message for new registrations
+    return res.status(200).json({
+      message: 'If the email is not already registered, an account will be created. Please check your email for verification instructions.',
+      // In a real implementation, you may want to actually send a verification email here
     });
     
   } catch (error: any) {

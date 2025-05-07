@@ -10,7 +10,8 @@
     },
     "scripts": {
         "test": "jest",
-        "start": "nodemon -L app.ts --delay 3"
+        "start": "nodemon -L app.ts --delay 3",
+        "reindex": "ts-node util/reindex-solr.ts"
     },
     "nodemonConfig": {
         "ext": "ts",
@@ -21,11 +22,14 @@
     },
     "dependencies": {
         "@prisma/client": "^5.1.1",
+        "axios": "^1.9.0",
         "bcrypt": "^5.1.0",
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.20.1",
+        "cookie-parser": "^1.4.7",
         "cors": "^2.8.0",
         "courses_api": "file:",
+        "csurf": "^1.10.0",
         "date-fns": "^2.30.0",
         "dotenv": "^16.0.0",
         "express": "^4.18.0",

@@ -5,6 +5,7 @@ export class Member {
     readonly id?: number;
     readonly person: Person;
     password?: string;
+    username: any;
 
     constructor(member:{
         id: number,
