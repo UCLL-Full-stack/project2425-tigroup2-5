@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import crypto from 'crypto';
 
 // Store for CSRF tokens - in production, use Redis or another persistent store
-const tokenStore = new Map<string, { token: string, expires: number }>();
+export const tokenStore = new Map<string, { token: string, expires: number }>();
 
 // CSRF token validity duration in milliseconds (30 minutes)
 const TOKEN_VALIDITY = 30 * 60 * 1000;

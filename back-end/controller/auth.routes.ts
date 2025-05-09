@@ -3,8 +3,40 @@ import authService from '../service/auth.service';
 import { Request, Response } from 'express';
 import { authRateLimiter } from '../middleware/rate-limiter.middleware';
 import { Person } from '../model/person';
+import { attachCsrfToken } from '../middleware/csrf.middleware';
 
 const router = express.Router();
+
+/**
+ * @swagger
+ * /auth/csrf-token:
+ *   get:
+ *     summary: Get a CSRF token for protected operations
+ *     tags: [Authentication]
+ *     responses:
+ *       200:
+ *         description: CSRF token generated
+ */
+router.get('/csrf-token', (req: Request, res: Response) => {
+  // Generate a random token
+  const crypto = require('crypto');
+  const token = crypto.randomBytes(32).toString('hex');
+  const sessionId = req.headers.authorization || req.ip || 'unknown';
+  const expires = Date.now() + (30 * 60 * 1000); // 30 minutes expiry
+  
+  // Store the token
+  const tokenStore = require('../middleware/csrf.middleware').tokenStore;
+  tokenStore.set(sessionId, { token, expires });
+  
+  // Set token as a custom header
+  res.setHeader('X-CSRF-Token', token);
+  
+  // Also return token in the body to avoid CORS issues with reading headers
+  return res.json({ 
+    csrfToken: token,
+    message: 'CSRF token generated'
+  });
+});
 
 /**
  * @swagger

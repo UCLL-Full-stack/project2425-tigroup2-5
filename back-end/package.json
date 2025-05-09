@@ -11,7 +11,11 @@
     "scripts": {
         "test": "jest",
         "start": "nodemon -L app.ts --delay 3",
-        "reindex": "ts-node util/reindex-solr.ts"
+        "reindex": "ts-node util/reindex-solr.ts",
+        "preinstall": "npx npm-shield",
+        "postinstall": "npm audit",
+        "security-updates": "npx npm-check-updates -u --target semver --doctor",
+        "audit": "npm audit --production"
     },
     "nodemonConfig": {
         "ext": "ts",
@@ -57,5 +61,8 @@
         "ts-jest": "^29.2.5",
         "ts-node": "^10.9.0",
         "typescript": "^4.9.0"
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org/"
     }
 }

@@ -15,6 +15,27 @@ const parseJwt = (token: string) => {
 };
 
 /**
+ * Get CSRF token for requests that need it
+ */
+const getCsrfToken = async (): Promise<string | null> => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/csrf-token`, {
+      method: 'GET',
+      credentials: 'include',
+    });
+    
+    if (!response.ok) return null;
+    
+    // Get token from response body instead of headers to avoid CORS issues
+    const data = await response.json();
+    return data.csrfToken || null;
+  } catch (error) {
+    console.error('Failed to get CSRF token:', error);
+    return null;
+  }
+};
+
+/**
  * Handle login for members and employees
  */
 const login = async (email: string, password: string, userType: 'member' | 'employee' = 'member') => {
@@ -22,10 +43,14 @@ const login = async (email: string, password: string, userType: 'member' | 'empl
     console.log(`Attempting login for ${email} as ${userType}`);
     console.log(`API URL: ${process.env.NEXT_PUBLIC_API_URL}`);
     
+    // Get CSRF token first
+    const csrfToken = await getCsrfToken();
+    
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        ...(csrfToken ? { 'X-CSRF-Token': csrfToken } : {}),
       },
       body: JSON.stringify({ email, password, userType }),
       credentials: 'include', // Include cookies if your API uses them
@@ -150,10 +175,14 @@ const getToken = (): string | null => {
  * Register a new user
  */
 const register = async (userData: any) => {
+  // Get CSRF token first
+  const csrfToken = await getCsrfToken();
+  
   return fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      ...(csrfToken ? { 'X-CSRF-Token': csrfToken } : {}),
     },
     body: JSON.stringify(userData),
     credentials: 'include',
@@ -194,12 +223,17 @@ const logout = () => {
  * Request a password reset
  */
 const requestPasswordReset = async (email: string, userType: 'member' | 'employee' = 'member') => {
+  // Get CSRF token first
+  const csrfToken = await getCsrfToken();
+  
   return fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/forgot-password`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      ...(csrfToken ? { 'X-CSRF-Token': csrfToken } : {}),
     },
     body: JSON.stringify({ email, userType }),
+    credentials: 'include',
   }).then(res => {
     if (!res.ok) {
       throw new Error('Failed to request password reset');
@@ -212,12 +246,17 @@ const requestPasswordReset = async (email: string, userType: 'member' | 'employe
  * Reset password with token
  */
 const resetPassword = async (token: string, password: string) => {
+  // Get CSRF token first
+  const csrfToken = await getCsrfToken();
+  
   return fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/reset-password`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      ...(csrfToken ? { 'X-CSRF-Token': csrfToken } : {}),
     },
     body: JSON.stringify({ token, password }),
+    credentials: 'include',
   }).then(res => {
     if (!res.ok) {
       return res.json().then(data => {

@@ -18,6 +18,7 @@ import helmet from 'helmet';
 import { csrfProtection, attachCsrfToken } from './middleware/csrf.middleware';
 import { validateRequest } from './middleware/validation.middleware';
 import { sqlInjectionProtection } from './middleware/sql-injection.middleware';
+import { ssrfProtection } from './middleware/ssrf.middleware';
 import crypto from 'crypto';
 
 const app = express();
@@ -81,6 +82,7 @@ app.use(bodyParser.json({ limit: '100kb' })); // Limit request size to prevent D
 // Application-wide middlewares for security
 app.use(validateRequest()); // XSS protection
 app.use(sqlInjectionProtection()); // SQL injection protection
+app.use(ssrfProtection()); // SSRF protection for all routes
 
 // Generate a unique request ID for each request, helping with traceability
 app.use((req, res, next) => {
@@ -114,9 +116,10 @@ app.get('/status', (req, res) => {
 });
 
 // For state-changing routes, attach CSRF protection middleware
-// Public routes
+// Public routes (no CSRF protection)
 app.use('/auth/login', authRouter);
 app.use('/auth/register', authRouter);
+app.use('/auth/csrf-token', authRouter);
 
 // Protected routes with CSRF protection
 app.use('/auth', csrfProtection, authRouter);
